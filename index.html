@@ -6,111 +6,194 @@
     <title>Henry Custom PC | 亨利定制装机</title>
     <style>
         /* ============================
-           核心样式表 (Dark Mode)
+           核心样式表 (Dark Mode + Apple Animations)
            ============================ */
         :root {
             --primary-color: #00f2ff; /* 赛博朋克蓝 */
             --secondary-color: #ff0055; /* 促销强调色 */
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #e0e0e0;
+            --bg-color: #0a0a0a; /* 更深邃的黑 */
+            --card-bg: #161616; /* 稍微提亮的卡片黑 */
+            --text-color: #f0f0f0;
+            /* 🍎 苹果风格缓动曲线：丝滑的关键 */
+            --apple-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --bounce-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        
+        /* 全局平滑滚动 */
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--text-color);
-            line-height: 1.6;
+            line-height: 1.7;
+            overflow-x: hidden; /* 防止动画导致横向滚动条 */
         }
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        a { text-decoration: none; color: inherit; transition: color 0.3s var(--apple-ease); }
         a:hover { color: var(--primary-color); }
         
-        /* 顶部导航 */
+        /* 顶部导航 (磨砂玻璃效果) */
         header {
-            background-color: rgba(0, 0, 0, 0.95);
+            background-color: rgba(10, 10, 10, 0.8); /* 半透明黑 */
+            backdrop-filter: saturate(180%) blur(20px); /* 核心磨砂效果 */
+            -webkit-backdrop-filter: saturate(180%) blur(20px); /* Safari 支持 */
             padding: 15px 5%;
             position: fixed; width: 90%; top: 0; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #333;
-            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px; }
         
         /* 语言切换按钮 */
-        .lang-switch {
-            display: flex; gap: 10px; align-items: center; font-size: 0.9rem; cursor: pointer;
-        }
+        .lang-switch { display: flex; gap: 10px; align-items: center; font-size: 0.9rem; cursor: pointer; }
         .lang-btn {
-            background: none; border: 1px solid #555; color: #aaa;
-            padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: 0.2s;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #aaa;
+            padding: 6px 12px; border-radius: 8px; cursor: pointer; 
+            transition: all 0.3s var(--apple-ease);
         }
-        .lang-btn:hover { border-color: #fff; color: #fff; }
+        .lang-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.3); }
         .lang-btn.active { border-color: var(--primary-color); color: var(--primary-color); background: rgba(0, 242, 255, 0.1); }
 
         /* 语言显示控制 */
         [data-lang]:not(.active-lang) { display: none; }
 
-        /* 英雄区 (Hero Section) */
-        .hero {
-            height: 90vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            /* 背景图：之后可以换成你自己的装机帅图 */
-            background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(18,18,18,1)), url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; background-position: center; margin-top: 60px;
+        /* ============================
+           🍎 动画核心类定义
+           ============================ */
+        
+        /* 1. 首屏加载动画 keyframes */
+        @keyframes fadeInUpHero {
+            from { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
-        .hero h1 { 
-            font-size: 2.5rem; margin-bottom: 10px; 
-            text-shadow: 0 0 20px rgba(0, 242, 255, 0.5); 
-            line-height: 1.2;
-        }
-        .hero p { font-size: 1.2rem; max-width: 700px; color: #ccc; margin-bottom: 30px;}
-        .btn {
-            padding: 15px 40px; background-color: var(--primary-color); color: #000;
-            font-weight: bold; border-radius: 50px; display: inline-block; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
-        }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 242, 255, 0.6); }
 
-        /* 通用区块 */
-        section { padding: 80px 10%; }
-        h2 { 
-            border-left: 5px solid var(--primary-color); padding-left: 20px; margin-bottom: 50px; 
-            font-size: 2.2rem; text-transform: uppercase; letter-spacing: 1px;
+        /* 2. 滚动触发动画的基础状态 (隐藏态) */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95); /* 向下偏移并缩小 */
+            filter: blur(5px); /* 初始带点模糊 */
+            transition: opacity 1.2s var(--apple-ease), 
+                        transform 1.2s var(--apple-ease),
+                        filter 1.2s var(--apple-ease);
         }
         
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .feature-card { 
-            background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid #333; 
-            transition: 0.3s;
+        /* 3. 滚动触发动画的激活状态 (显示态) - 由 JS 添加此 class */
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
         }
-        .feature-card:hover { transform: translateY(-5px); border-color: var(--primary-color); }
-        .feature-card h3 { color: var(--primary-color); margin-top: 0; font-size: 1.4rem; }
+
+        /* 4. 错峰延迟 (Stagger Delay) - 让卡片一个个出来 */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+
+        /* ============================
+           页面区块样式
+           ============================ */
+
+        /* 英雄区 (Hero Section) */
+        .hero {
+            height: 95vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            /* 背景图：增加了径向渐变，更有质感 */
+            background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(10,10,10,1) 100%), 
+                        url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed; /* 简单的视差效果 */
+            margin-top: 0; padding-top: 60px;
+        }
+        
+        /* 首屏元素应用加载动画，带延迟 */
+        .hero h1 { 
+            font-size: 3.5rem; margin-bottom: 20px; line-height: 1.1; 
+            text-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+            animation: fadeInUpHero 1.2s var(--apple-ease) both; /* 立即执行 */
+        }
+        .hero p { 
+            font-size: 1.3rem; max-width: 700px; color: #ccc; margin-bottom: 40px;
+            animation: fadeInUpHero 1.2s var(--apple-ease) 0.2s both; /* 延迟 0.2s */
+        }
+        .btn {
+            padding: 16px 45px; background-color: var(--primary-color); color: #000;
+            font-weight: 700; border-radius: 50px; display: inline-block; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px; 
+            box-shadow: 0 10px 30px -10px rgba(0, 242, 255, 0.5);
+            transition: all 0.4s var(--bounce-ease); /* 使用Q弹效果 */
+            animation: fadeInUpHero 1.2s var(--apple-ease) 0.4s both; /* 延迟 0.4s */
+        }
+        .btn:hover { 
+            transform: translateY(-5px) scale(1.03); 
+            box-shadow: 0 20px 40px -10px rgba(0, 242, 255, 0.7); 
+            background-color: #fff;
+        }
+
+        /* 通用区块 */
+        section { padding: 100px 8%; }
+        h2 { 
+            font-size: 2.5rem; margin-bottom: 60px; text-align: center; font-weight: 800;
+            letter-spacing: -1px;
+        }
+        /* 标题的装饰线 */
+        h2::after {
+            content: ''; display: block; width: 60px; height: 4px; 
+            background: var(--primary-color); margin: 20px auto 0; border-radius: 2px;
+        }
+        
+        /* 网格布局 */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        /* 卡片样式优化 */
+        .feature-card { 
+            background-color: var(--card-bg); padding: 40px 30px; border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.5s var(--apple-ease);
+        }
+        .feature-card:hover { 
+            transform: translateY(-10px) scale(1.02); /* 悬停上浮 */
+            border-color: rgba(0, 242, 255, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 242, 255, 0.1);
+            background-color: #1a1a1a;
+        }
+        .feature-card h3 { color: var(--primary-color); margin-top: 0; font-size: 1.5rem; margin-bottom: 15px; }
+        .feature-card p, .feature-card li { color: #bbb; }
 
         /* 流程步骤 (Process) */
-        .process-steps { display: flex; flex-wrap: wrap; justify-content: space-between; text-align: center; gap: 20px; }
-        .step { flex: 1; min-width: 200px; }
+        .process-steps { display: flex; flex-wrap: wrap; justify-content: space-between; text-align: center; gap: 30px; }
+        .step { flex: 1; min-width: 220px; position: relative; }
         .step-num { 
-            font-size: 2.5rem; font-weight: bold; color: rgba(255,255,255,0.1); 
-            position: relative; top: 20px; z-index: 0; 
+            font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.03); 
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%); z-index: 0;
         }
-        .step-title { font-weight: bold; font-size: 1.2rem; position: relative; z-index: 1; color: var(--primary-color); }
+        .step-title { font-weight: bold; font-size: 1.3rem; position: relative; z-index: 1; color: #fff; margin-bottom: 10px;}
 
         /* FAQ 样式 */
-        details { background: var(--card-bg); margin-bottom: 15px; border-radius: 8px; border: 1px solid #333; overflow: hidden; }
-        summary { padding: 20px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        details { 
+            background: var(--card-bg); margin-bottom: 15px; border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.05); overflow: hidden; 
+            transition: all 0.3s ease;
+        }
+        details[open] { border-color: rgba(0, 242, 255, 0.3); background: #1a1a1a; }
+        summary { padding: 25px; cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; transition: color 0.3s; }
+        summary:hover { color: var(--primary-color); }
         summary::-webkit-details-marker { display: none; }
-        summary::after { content: '+'; font-size: 1.5rem; color: var(--primary-color); }
-        details[open] summary::after { content: '-'; }
-        .faq-content { padding: 0 20px 20px; color: #bbb; border-top: 1px solid #333; margin-top: 10px; padding-top: 15px;}
+        summary::after { content: '+'; font-size: 1.5rem; color: var(--primary-color); transition: transform 0.3s var(--bounce-ease); }
+        details[open] summary::after { content: '+'; transform: rotate(45deg); /* 旋转加号变叉号 */ }
+        .faq-content { padding: 0 25px 25px; color: #bbb; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 0; padding-top: 20px; animation: fadeInUpHero 0.5s var(--apple-ease);}
 
         /* Footer */
-        footer { background-color: #050505; border-top: 1px solid #222; padding: 50px 20px; text-align: center; color: #666; font-size: 0.9rem; }
+        footer { background-color: #050505; border-top: 1px solid rgba(255,255,255,0.1); padding: 80px 10% 40px; text-align: center; color: #666; font-size: 0.9rem; }
 
         /* 移动端优化 */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            section { padding: 50px 5%; }
-            header { flex-direction: column; gap: 15px; }
+            .hero h1 { font-size: 2.2rem; }
+            section { padding: 60px 5%; }
+            header { flex-direction: column; gap: 15px; padding: 15px; backdrop-filter: saturate(180%) blur(30px); }
             .process-steps { flex-direction: column; }
+            h2 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -145,12 +228,12 @@
     </section>
 
     <section id="about">
-        <h2 data-lang="en">Why Henry Custom PC?</h2>
-        <h2 data-lang="zh">为什么选择 Henry？</h2>
-        <h2 data-lang="es">¿Por qué Henry Custom PC?</h2>
+        <h2 data-lang="en" class="animate-on-scroll">Why Henry Custom PC?</h2>
+        <h2 data-lang="zh" class="animate-on-scroll">为什么选择 Henry？</h2>
+        <h2 data-lang="es" class="animate-on-scroll">¿Por qué Henry Custom PC?</h2>
 
         <div class="features-grid">
-            <div class="feature-card">
+            <div class="feature-card animate-on-scroll delay-1">
                 <h3 data-lang="en">🚀 Performance Tuned</h3>
                 <p data-lang="en">I have a VFX background. I know how to optimize BIOS and drivers for Premiere Pro, After Effects, and AAA Gaming.</p>
                 <h3 data-lang="zh">🚀 性能调优</h3>
@@ -158,7 +241,7 @@
                 <h3 data-lang="es">🚀 Optimizado</h3>
                 <p data-lang="es">Tengo experiencia en VFX. Sé cómo optimizar BIOS y controladores para Premiere Pro y Gaming AAA.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card animate-on-scroll delay-2">
                 <h3 data-lang="en">💎 Crystal Clean Builds</h3>
                 <p data-lang="en">Cable management is my obsession. Optimized airflow means lower temperatures and longer lifespan.</p>
                 <h3 data-lang="zh">💎 强迫症级走线</h3>
@@ -166,7 +249,7 @@
                 <h3 data-lang="es">💎 Construcciones Limpias</h3>
                 <p data-lang="es">La gestión de cables es mi obsesión. El flujo de aire optimizado significa temperaturas más bajas.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card animate-on-scroll delay-3">
                 <h3 data-lang="en">🤝 Honest Local Service</h3>
                 <p data-lang="en">Located in Flushing. Transparent pricing, no hidden fees. I'm just a text away if you need help.</p>
                 <h3 data-lang="zh">🤝 诚实透明</h3>
@@ -177,13 +260,13 @@
         </div>
     </section>
 
-    <section style="background-color: #1a1a1a;">
-        <h2 data-lang="en">How It Works</h2>
-        <h2 data-lang="zh">服务流程</h2>
-        <h2 data-lang="es">Cómo Funciona</h2>
+    <section style="background-color: #0f0f0f;">
+        <h2 data-lang="en" class="animate-on-scroll">How It Works</h2>
+        <h2 data-lang="zh" class="animate-on-scroll">服务流程</h2>
+        <h2 data-lang="es" class="animate-on-scroll">Cómo Funciona</h2>
 
         <div class="process-steps">
-            <div class="step">
+            <div class="step animate-on-scroll delay-1">
                 <div class="step-num">01</div>
                 <div class="step-title" data-lang="en">Consult</div>
                 <div class="step-title" data-lang="zh">咨询需求</div>
@@ -191,7 +274,7 @@
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">填写表单，告诉我你的预算和用途。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">Fill out the form with your budget.</p>
             </div>
-            <div class="step">
+            <div class="step animate-on-scroll delay-2">
                 <div class="step-num">02</div>
                 <div class="step-title" data-lang="en">Parts Selection</div>
                 <div class="step-title" data-lang="zh">确定配置</div>
@@ -199,7 +282,7 @@
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">我为你出具最优配置单，确认无误。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">I create the perfect parts list for you.</p>
             </div>
-            <div class="step">
+            <div class="step animate-on-scroll delay-3">
                 <div class="step-num">03</div>
                 <div class="step-title" data-lang="en">Build & Test</div>
                 <div class="step-title" data-lang="zh">组装与测试</div>
@@ -207,7 +290,7 @@
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">精心组装，并进行压力测试确保稳定。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">Professional assembly and stress testing.</p>
             </div>
-            <div class="step">
+            <div class="step animate-on-scroll delay-4">
                 <div class="step-num">04</div>
                 <div class="step-title" data-lang="en">Pickup/Delivery</div>
                 <div class="step-title" data-lang="zh">交付</div>
@@ -218,36 +301,38 @@
         </div>
     </section>
 
-    <section id="pricing" style="background-color: #0f0f0f;">
-        <h2 data-lang="en">Transparent Pricing</h2>
-        <h2 data-lang="zh">透明报价</h2>
-        <h2 data-lang="es">Precios Transparentes</h2>
+    <section id="pricing">
+        <h2 data-lang="en" class="animate-on-scroll">Transparent Pricing</h2>
+        <h2 data-lang="zh" class="animate-on-scroll">透明报价</h2>
+        <h2 data-lang="es" class="animate-on-scroll">Precios Transparentes</h2>
         
-        <p data-lang="zh" style="margin-bottom: 40px; color: #888;">
-            没有隐形消费。硬件按市场价实报实销，我只收专业的手工费。<br>
-            <span style="color: var(--secondary-color); font-weight: bold;">🎉 开业限时特惠：手工费 8 折 (20% OFF)！</span>
-        </p>
-        <p data-lang="en" style="margin-bottom: 40px; color: #888;">
-            No hidden fees. You pay market price for parts. I charge a flat service fee.<br>
-            <span style="color: var(--secondary-color); font-weight: bold;">🎉 Grand Opening: 20% OFF Labor Fee!</span>
-        </p>
-        <p data-lang="es" style="margin-bottom: 40px; color: #888;">
-            Sin tarifas ocultas. Tarifa plana de servicio.<br>
-            <span style="color: var(--secondary-color); font-weight: bold;">🎉 Gran Inauguración: ¡20% de Descuento!</span>
-        </p>
+        <div class="animate-on-scroll">
+            <p data-lang="zh" style="margin-bottom: 40px; color: #ccc; text-align: center; max-width: 700px; margin: 0 auto 50px;">
+                没有隐形消费。硬件按市场价实报实销，我只收专业的手工费。<br>
+                <span style="color: var(--secondary-color); font-weight: bold; font-size: 1.1rem; display: inline-block; margin-top: 10px; padding: 5px 15px; background: rgba(255, 0, 85, 0.1); border-radius: 20px;">🎉 开业限时特惠：手工费 8 折 (20% OFF)！</span>
+            </p>
+            <p data-lang="en" style="margin-bottom: 40px; color: #ccc; text-align: center; max-width: 700px; margin: 0 auto 50px;">
+                No hidden fees. You pay market price for parts. I charge a flat service fee.<br>
+                <span style="color: var(--secondary-color); font-weight: bold; font-size: 1.1rem; display: inline-block; margin-top: 10px; padding: 5px 15px; background: rgba(255, 0, 85, 0.1); border-radius: 20px;">🎉 Grand Opening: 20% OFF Labor Fee!</span>
+            </p>
+            <p data-lang="es" style="margin-bottom: 40px; color: #ccc; text-align: center; max-width: 700px; margin: 0 auto 50px;">
+                Sin tarifas ocultas. Tarifa plana de servicio.<br>
+                <span style="color: var(--secondary-color); font-weight: bold; font-size: 1.1rem; display: inline-block; margin-top: 10px; padding: 5px 15px; background: rgba(255, 0, 85, 0.1); border-radius: 20px;">🎉 Gran Inauguración: ¡20% de Descuento!</span>
+            </p>
+        </div>
 
         <div class="features-grid">
-            <div class="feature-card" style="border-top: 3px solid #888;">
+            <div class="feature-card animate-on-scroll delay-1" style="border-top: 3px solid #888;">
                 <h3 data-lang="en">BYO Parts</h3>
                 <h3 data-lang="zh">自带配件组装</h3>
                 <h3 data-lang="es">Trae tus Piezas</h3>
                 
-                <div style="font-size: 2.5rem; font-weight: bold; margin: 15px 0;">
-                    <span style="text-decoration: line-through; font-size: 1.5rem; color: #666;">$100</span>
-                    $80 <span style="font-size: 1rem; color: #888;">/ tower</span>
+                <div style="font-size: 3rem; font-weight: 800; margin: 20px 0; letter-spacing: -2px;">
+                    <span style="text-decoration: line-through; font-size: 1.5rem; color: #666; font-weight: normal;">$100</span>
+                    $80 <span style="font-size: 1rem; color: #888; font-weight: normal; letter-spacing: 0;">/ tower</span>
                 </div>
                 
-                <ul style="text-align: left; margin-top: 20px; color: #ccc; line-height: 2;">
+                <ul style="text-align: left; margin-top: 30px; color: #ccc; line-height: 2.2; padding-left: 20px;">
                     <li data-lang="zh">✅ 你买配件，我来装</li>
                     <li data-lang="zh">✅ 基础风道优化</li>
                     <li data-lang="zh">✅ 背部走线整理</li>
@@ -259,20 +344,20 @@
                 </ul>
             </div>
 
-            <div class="feature-card" style="border-top: 3px solid var(--primary-color); transform: scale(1.05); background-color: #252525;">
-                <div style="background: var(--primary-color); color: #000; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 10px;">
-                    <span data-lang="zh">最推荐 / Best Value</span>
+            <div class="feature-card animate-on-scroll delay-2" style="border-top: 3px solid var(--primary-color); background-color: #1a1a1a; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 20px; right: 20px; background: var(--primary-color); color: #000; padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
+                    <span data-lang="zh">推荐 / Best Value</span>
                 </div>
                 <h3 data-lang="en">Full Custom Build</h3>
                 <h3 data-lang="zh">全案定制服务</h3>
                 <h3 data-lang="es">Servicio Completo</h3>
                 
-                <div style="font-size: 2.5rem; font-weight: bold; margin: 15px 0; color: var(--primary-color);">
-                    <span style="text-decoration: line-through; font-size: 1.5rem; color: #666;">$150</span>
-                    $120 <span style="font-size: 1rem; color: #888;">/ tower</span>
+                <div style="font-size: 3rem; font-weight: 800; margin: 20px 0; color: var(--primary-color); letter-spacing: -2px;">
+                    <span style="text-decoration: line-through; font-size: 1.5rem; color: #666; font-weight: normal;">$150</span>
+                    $120 <span style="font-size: 1rem; color: #888; font-weight: normal; letter-spacing: 0;">/ tower</span>
                 </div>
                 
-                <ul style="text-align: left; margin-top: 20px; color: #ccc; line-height: 2;">
+                <ul style="text-align: left; margin-top: 30px; color: #ccc; line-height: 2.2; padding-left: 20px;">
                     <li data-lang="zh">⭐ <b>包含配置咨询 (价值$50)</b></li>
                     <li data-lang="zh">✅ 我帮你选件、下单、验货</li>
                     <li data-lang="zh">✅ 包含 BIOS 超频/降压优化</li>
@@ -286,16 +371,16 @@
                 </ul>
             </div>
 
-            <div class="feature-card" style="border-top: 3px solid #888;">
+            <div class="feature-card animate-on-scroll delay-3" style="border-top: 3px solid #888;">
                 <h3 data-lang="en">Upgrade / Fix</h3>
                 <h3 data-lang="zh">老机升级 & 维护</h3>
                 <h3 data-lang="es">Actualización</h3>
                 
-                <div style="font-size: 2.5rem; font-weight: bold; margin: 15px 0;">
+                <div style="font-size: 3rem; font-weight: 800; margin: 20px 0; letter-spacing: -2px;">
                     $50+
                 </div>
                 
-                <ul style="text-align: left; margin-top: 20px; color: #ccc; line-height: 2;">
+                <ul style="text-align: left; margin-top: 30px; color: #ccc; line-height: 2.2; padding-left: 20px;">
                     <li data-lang="zh">✅ 显卡/内存/硬盘升级</li>
                     <li data-lang="zh">✅ 清灰换硅脂 (降低温度)</li>
                     <li data-lang="zh">✅ 系统重装 / 蓝屏排查</li>
@@ -307,59 +392,58 @@
             </div>
         </div>
         
-        <p style="margin-top: 30px; font-size: 0.9rem; color: #666;">
+        <p class="animate-on-scroll" style="margin-top: 50px; font-size: 0.9rem; color: #666; text-align: center;">
             <span data-lang="zh">* 硬件费用需由客户承担。复杂的分体水冷方案请单独询价。</span>
             <span data-lang="en">* Hardware costs are separate. Custom loop water cooling requires a custom quote.</span>
         </p>
     </section>
 
-    <section id="contact">
-        <h2 data-lang="en">Start Your Build</h2>
-        <h2 data-lang="zh">开始你的装机之旅</h2>
-        <h2 data-lang="es">Comienza tu Construcción</h2>
+    <section id="contact" style="background-color: #0f0f0f;">
+        <h2 data-lang="en" class="animate-on-scroll">Start Your Build</h2>
+        <h2 data-lang="zh" class="animate-on-scroll">开始你的装机之旅</h2>
+        <h2 data-lang="es" class="animate-on-scroll">Comienza tu Construcción</h2>
         
-        <p data-lang="en" style="margin-bottom:20px;">Fill out the form below to let me know your budget and needs.</p>
-        <p data-lang="zh" style="margin-bottom:20px;">花 1 分钟填个表，让我知道你的预算和用途，我会尽快给你出方案。</p>
-        <p data-lang="es" style="margin-bottom:20px;">Complete el formulario a continuación.</p>
+        <p data-lang="en" class="animate-on-scroll" style="margin-bottom:40px; text-align: center; max-width: 600px; margin: 0 auto 50px;">Fill out the form below to let me know your budget and needs.</p>
+        <p data-lang="zh" class="animate-on-scroll" style="margin-bottom:40px; text-align: center; max-width: 600px; margin: 0 auto 50px;">花 1 分钟填个表，让我知道你的预算和用途，我会尽快给你出方案。</p>
+        <p data-lang="es" class="animate-on-scroll" style="margin-bottom:40px; text-align: center; max-width: 600px; margin: 0 auto 50px;">Complete el formulario a continuación.</p>
 
         <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start;">
             
-            <div style="flex: 2; min-width: 300px; background: #fff; border-radius: 10px; overflow: hidden;">
+            <div class="animate-on-scroll delay-1" style="flex: 2; min-width: 300px; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
                 <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeGwzkBnqqbm3ERqCUiDfUIvUot5sP3bp1epI84PPgFZFfQMQ/viewform?embedded=true" width="100%" height="2155" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
             </div>
 
-            <div style="flex: 1; min-width: 250px; background-color: var(--card-bg); padding: 30px; border-radius: 10px; border: 1px solid #333;">
-                <h3 data-lang="en" style="color:var(--primary-color)">Direct Contact</h3>
-                <h3 data-lang="zh" style="color:var(--primary-color)">直接找我</h3>
-                <h3 data-lang="es" style="color:var(--primary-color)">Contacto Directo</h3>
+            <div class="animate-on-scroll delay-2 feature-card" style="flex: 1; min-width: 250px; background-color: #1a1a1a; border: 1px solid rgba(255,255,255,0.1);">
+                <h3 data-lang="en">Direct Contact</h3>
+                <h3 data-lang="zh">直接找我</h3>
+                <h3 data-lang="es">Contacto Directo</h3>
                 
                 <br>
-                <p><strong>Phone / Text:</strong><br> <a href="sms:9292664485" style="font-size:1.2rem; color:#fff;">929-266-4485</a></p>
+                <p><strong>Phone / Text:</strong><br> <a href="sms:9292664485" style="font-size:1.2rem; color:#fff; font-weight: 600;">929-266-4485</a></p>
                 <br>
                 <p><strong>WeChat:</strong><br> 
-                    <span style="font-size:1.1rem; color:#00f2ff; font-weight:bold;">propcbuild2025</span>
+                    <span style="font-size:1.1rem; color:var(--primary-color); font-weight:bold;">propcbuild2025</span>
                 </p>
                 <br>
                 <p><strong>Location:</strong> Flushing, NY</p>
                 
-                <div style="margin-top: 30px; border-top: 1px solid #444; padding-top: 20px;">
-                    <p style="font-size: 0.8rem; color: #888;">
-                        <span data-lang="zh">* 忙碌时可能无法接听电话，建议优先短信或微信留言。</span>
-                        <span data-lang="en">* Please text or WeChat first for faster response.</span>
-                        <span data-lang="es">* Por favor envíe un mensaje de texto para una respuesta más rápida.</span>
+                <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                    <p style="font-size: 0.85rem; color: #888; line-height: 1.5;">
+                        <span data-lang="zh">💡 忙碌时可能无法接听电话，建议优先短信或微信留言，看到必回。</span>
+                        <span data-lang="en">💡 Please text or WeChat first for faster response.</span>
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="faq" style="background-color: #0a0a0a; border-top: 1px solid #222;">
-        <h2 data-lang="en">Still have questions?</h2>
-        <h2 data-lang="zh">还有疑问？</h2>
-        <h2 data-lang="es">¿Aún tienes preguntas?</h2>
+    <section id="faq">
+        <h2 data-lang="en" class="animate-on-scroll">Still have questions?</h2>
+        <h2 data-lang="zh" class="animate-on-scroll">还有疑问？</h2>
+        <h2 data-lang="es" class="animate-on-scroll">¿Aún tienes preguntas?</h2>
 
         <div style="max-width: 800px; margin: 0 auto;">
-            <details>
+            <details class="animate-on-scroll delay-1">
                 <summary>
                     <span data-lang="zh">我可以自己买配件找你装吗？</span>
                     <span data-lang="en">Can I bring my own parts?</span>
@@ -368,67 +452,57 @@
                 <div class="faq-content">
                     <p data-lang="zh">完全可以！如果你已经买好了配件，我提供纯组装与理线服务（$80起）。</p>
                     <p data-lang="en">Absolutely! If you have the parts, I offer assembly and cable management services starting at $80.</p>
-                    <p data-lang="es">¡Absolutamente! Si tienes las piezas, ofrezco servicios de montaje.</p>
                 </div>
             </details>
 
-            <details>
+            <details class="animate-on-scroll delay-2">
                 <summary>
                     <span data-lang="zh">一般需要多久能装好？</span>
                     <span data-lang="en">How long does it take?</span>
-                    <span data-lang="es">¿Cuánto tiempo tarda?</span>
                 </summary>
                 <div class="faq-content">
                     <p data-lang="zh">零件到齐后，通常在 24-48 小时内完成组装和测试。如果急需，请提前告知。</p>
                     <p data-lang="en">Usually 24-48 hours after all parts are received.</p>
-                    <p data-lang="es">Generalmente 24-48 horas después de recibir las piezas.</p>
                 </div>
             </details>
 
-            <details>
+            <details class="animate-on-scroll delay-3">
                 <summary>
                     <span data-lang="zh">你有保修吗？</span>
                     <span data-lang="en">Do you offer warranty?</span>
-                    <span data-lang="es">¿Ofrecen garantía?</span>
                 </summary>
                 <div class="faq-content">
                     <p data-lang="zh">硬件享受厂商原厂保修（我会帮你把盒子和发票留好）。如果是我的安装问题（如接线松动），永久免费修复。</p>
                     <p data-lang="en">Hardware comes with manufacturer warranty. I provide lifetime support for any assembly-related issues.</p>
-                    <p data-lang="es">Todo el hardware tiene garantía del fabricante.</p>
                 </div>
             </details>
             
-            <details>
+            <details class="animate-on-scroll delay-4">
                 <summary>
                     <span data-lang="zh">你住在 Flushing 哪里？方便停车吗？</span>
                     <span data-lang="en">Where in Flushing? Is parking easy?</span>
-                    <span data-lang="es">¿Dónde en Flushing?</span>
                 </summary>
                 <div class="faq-content">
                     <p data-lang="zh">我在 Flushing 中心区域（具体地址预约后发送）。如果你开车来送/取机箱，楼下可以短暂停留，非常方便。</p>
                     <p data-lang="en">Central Flushing. Easy curb-side drop-off and pickup available.</p>
-                    <p data-lang="es">Flushing central. Fácil entrega y recogida.</p>
                 </div>
             </details>
         </div>
     </section>
 
-    <footer style="background-color: #050505; border-top: 1px solid #222; padding: 50px 20px;">
-        
-        <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; text-align: left;">
-            
+    <footer class="animate-on-scroll">
+        <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; text-align: left;">
             <div style="flex: 1; min-width: 250px;">
-                <h3 style="color: var(--primary-color); margin-top: 0; text-transform: uppercase; letter-spacing: 2px;">Henry Custom PC</h3>
-                <p style="color: #888; font-size: 0.9rem; line-height: 1.8;">
+                <h3 style="color: var(--primary-color); margin-top: 0; text-transform: uppercase; letter-spacing: 2px; font-size: 1.2rem;">Henry Custom PC</h3>
+                <p style="color: #888; font-size: 0.9rem; line-height: 1.8; margin-top: 20px;">
                     Build with passion in Flushing, NY.<br>
                     为创作者与玩家打造的极致主机。<br>
                     <br>
-                    <span style="color: #555;">Focus on Performance & Esthetics.</span>
+                    <span style="color: #555; font-weight: 600;">Focus on Performance & Esthetics.</span>
                 </p>
             </div>
-
-            <div style="flex: 1; min-width: 300px; font-size: 0.8rem; color: #555; line-height: 1.5;">
-                <h4 style="color: #888; margin-top: 0;">Disclaimer / 免责声明</h4>
+            <div style="flex: 2; min-width: 300px; font-size: 0.85rem; color: #666; line-height: 1.6;">
+                <h4 style="color: #ccc; margin-top: 0; margin-bottom: 20px; font-size: 1rem;">Disclaimer / 免责声明</h4>
                 <p>
                     <span data-lang="zh">
                         1. 硬件保修：所有硬件均由其制造商提供保修。如果硬件出厂即为故障品(DOA)，我将协助进行退换货，但不承担硬件本身的成本。<br>
@@ -440,30 +514,25 @@
                         2. Data: Please backup your data before any service. I am not responsible for data loss.<br>
                         3. Deposit: Non-refundable deposit required for custom orders.
                     </span>
-                    <span data-lang="es">
-                         1. Garantía de Hardware: Proporcionada por los fabricantes.<br>
-                         2. Datos: Por favor haga una copia de seguridad de sus datos.<br>
-                         3. Depósito: Depósito no reembolsable requerido.
-                    </span>
+                    <span data-lang="es">1. Garantía de Hardware. 2. Datos. 3. Depósito.</span>
                 </p>
             </div>
-
             <div style="flex: 0 0 150px;">
-                <h4 style="color: #888; margin-top: 0;">Language</h4>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="lang-btn" onclick="switchLang('en')" style="text-align: left;">🇺🇸 English</button>
-                    <button class="lang-btn" onclick="switchLang('zh')" style="text-align: left;">🇨🇳 中文</button>
-                    <button class="lang-btn" onclick="switchLang('es')" style="text-align: left;">🇪🇸 Español</button>
+                <h4 style="color: #ccc; margin-top: 0; margin-bottom: 20px; font-size: 1rem;">Language</h4>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button class="lang-btn" onclick="switchLang('en')" style="text-align: left; width: 100%;">🇺🇸 English</button>
+                    <button class="lang-btn" onclick="switchLang('zh')" style="text-align: left; width: 100%;">🇨🇳 中文</button>
+                    <button class="lang-btn" onclick="switchLang('es')" style="text-align: left; width: 100%;">🇪🇸 Español</button>
                 </div>
             </div>
         </div>
-
-        <div style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #1a1a1a; color: #444; font-size: 0.8rem;">
-            &copy; 2025 Henry Custom PC. All Rights Reserved.
+        <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: #444; font-size: 0.8rem;">
+            &copy; 2025 Henry Custom PC. All Rights Reserved. <br> Built for Flushing.
         </div>
     </footer>
 
     <script>
+        // 语言切换功能
         function switchLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('[data-lang]').forEach(el => el.classList.remove('active-lang'));
@@ -471,12 +540,37 @@
             document.querySelectorAll(`.lang-btn[onclick="switchLang('${lang}')"]`).forEach(btn => btn.classList.add('active'));
         }
 
+        // 初始化
         window.onload = function() {
+            // 1. 自动设置语言
             const userLang = navigator.language || navigator.userLanguage; 
-            let targetLang = 'en'; // 默认英语
+            let targetLang = 'en'; 
             if (userLang.startsWith('zh')) { targetLang = 'zh'; }
             else if (userLang.startsWith('es')) { targetLang = 'es'; }
             switchLang(targetLang);
+
+            // 2. 🍎 滚动动画触发器 (Intersection Observer)
+            const observerOptions = {
+                root: null, // 使用视口作为根
+                threshold: 0.15, // 元素出现 15% 时触发
+                rootMargin: "0px 0px -50px 0px" // 稍微提前一点触发
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 当元素进入视口，添加 .is-visible 类
+                        entry.target.classList.add('is-visible');
+                        // 可选：动画只触发一次，触发后取消观察 (性能更好)
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            // 找到所有带有 .animate-on-scroll 的元素并开始观察
+            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
         };
     </script>
 </body>
