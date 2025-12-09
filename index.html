@@ -6,20 +6,17 @@
     <title>Henry Custom PC | 亨利定制装机</title>
     <style>
         /* ============================
-           核心样式表 (Dark Mode + Apple Animations)
+           核心样式表 (Dark Mode + 性能优化版)
            ============================ */
         :root {
             --primary-color: #00f2ff; /* 赛博朋克蓝 */
             --secondary-color: #ff0055; /* 促销强调色 */
-            --bg-color: #0a0a0a; /* 更深邃的黑 */
-            --card-bg: #161616; /* 稍微提亮的卡片黑 */
+            --bg-color: #0a0a0a; /* 深邃黑 */
+            --card-bg: #161616; /* 卡片黑 */
             --text-color: #f0f0f0;
-            /* 🍎 苹果风格缓动曲线：丝滑的关键 */
             --apple-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --bounce-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         
-        /* 全局平滑滚动 */
         html { scroll-behavior: smooth; }
 
         body {
@@ -27,105 +24,93 @@
             margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--text-color);
             line-height: 1.7;
-            overflow-x: hidden; /* 防止动画导致横向滚动条 */
+            overflow-x: hidden;
         }
         a { text-decoration: none; color: inherit; transition: color 0.3s var(--apple-ease); }
         a:hover { color: var(--primary-color); }
         
-        /* 顶部导航 (磨砂玻璃效果) */
+        /* 顶部导航 */
         header {
-            background-color: rgba(10, 10, 10, 0.8); /* 半透明黑 */
-            backdrop-filter: saturate(180%) blur(20px); /* 核心磨砂效果 */
-            -webkit-backdrop-filter: saturate(180%) blur(20px); /* Safari 支持 */
+            background-color: rgba(10, 10, 10, 0.85);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
             padding: 15px 5%;
             position: fixed; width: 90%; top: 0; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px; }
         
-        /* 语言切换按钮 */
+        /* 语言切换 */
         .lang-switch { display: flex; gap: 10px; align-items: center; font-size: 0.9rem; cursor: pointer; }
         .lang-btn {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #aaa;
             padding: 6px 12px; border-radius: 8px; cursor: pointer; 
-            transition: all 0.3s var(--apple-ease);
+            transition: all 0.3s ease;
         }
-        .lang-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.3); }
+        .lang-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
         .lang-btn.active { border-color: var(--primary-color); color: var(--primary-color); background: rgba(0, 242, 255, 0.1); }
-
-        /* 语言显示控制 */
         [data-lang]:not(.active-lang) { display: none; }
 
         /* ============================
-           🍎 动画核心类定义
+           动画系统
            ============================ */
-        
-        /* 1. 首屏加载动画 keyframes */
         @keyframes fadeInUpHero {
-            from { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(10px); }
-            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+            from { opacity: 0; transform: translateY(30px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
-        /* 2. 滚动触发动画的基础状态 (隐藏态) */
         .animate-on-scroll {
             opacity: 0;
-            transform: translateY(50px) scale(0.95); /* 向下偏移并缩小 */
-            filter: blur(5px); /* 初始带点模糊 */
-            transition: opacity 1.2s var(--apple-ease), 
-                        transform 1.2s var(--apple-ease),
-                        filter 1.2s var(--apple-ease);
+            transform: translateY(40px);
+            transition: opacity 1s var(--apple-ease), transform 1s var(--apple-ease);
+            will-change: opacity, transform;
         }
         
-        /* 3. 滚动触发动画的激活状态 (显示态) - 由 JS 添加此 class */
         .animate-on-scroll.is-visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
+            transform: translateY(0);
         }
 
-        /* 4. 错峰延迟 (Stagger Delay) - 让卡片一个个出来 */
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
-        .delay-4 { transition-delay: 0.4s; }
-
 
         /* ============================
-           页面区块样式
+           页面区块
            ============================ */
 
-        /* 英雄区 (Hero Section) */
+        /* Hero Section */
         .hero {
             height: 95vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
-            /* 背景图：增加了径向渐变，更有质感 */
-            background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(10,10,10,1) 100%), 
+            background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(10,10,10,1) 100%), 
                         url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; background-position: center; background-attachment: fixed; /* 简单的视差效果 */
-            margin-top: 0; padding-top: 60px;
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: scroll; /* 防止手机抖动 */
+            padding-top: 60px;
         }
         
-        /* 首屏元素应用加载动画，带延迟 */
         .hero h1 { 
             font-size: 3.5rem; margin-bottom: 20px; line-height: 1.1; 
             text-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
-            animation: fadeInUpHero 1.2s var(--apple-ease) both; /* 立即执行 */
+            animation: fadeInUpHero 1s var(--apple-ease) both;
         }
         .hero p { 
             font-size: 1.3rem; max-width: 700px; color: #ccc; margin-bottom: 40px;
-            animation: fadeInUpHero 1.2s var(--apple-ease) 0.2s both; /* 延迟 0.2s */
+            animation: fadeInUpHero 1s var(--apple-ease) 0.2s both;
         }
         .btn {
             padding: 16px 45px; background-color: var(--primary-color); color: #000;
             font-weight: 700; border-radius: 50px; display: inline-block; cursor: pointer;
             text-transform: uppercase; letter-spacing: 1px; 
             box-shadow: 0 10px 30px -10px rgba(0, 242, 255, 0.5);
-            transition: all 0.4s var(--bounce-ease); /* 使用Q弹效果 */
-            animation: fadeInUpHero 1.2s var(--apple-ease) 0.4s both; /* 延迟 0.4s */
+            transition: transform 0.3s var(--apple-ease), box-shadow 0.3s;
+            animation: fadeInUpHero 1s var(--apple-ease) 0.4s both;
         }
         .btn:hover { 
-            transform: translateY(-5px) scale(1.03); 
+            transform: translateY(-3px); 
             box-shadow: 0 20px 40px -10px rgba(0, 242, 255, 0.7); 
             background-color: #fff;
         }
@@ -136,32 +121,27 @@
             font-size: 2.5rem; margin-bottom: 60px; text-align: center; font-weight: 800;
             letter-spacing: -1px;
         }
-        /* 标题的装饰线 */
         h2::after {
             content: ''; display: block; width: 60px; height: 4px; 
             background: var(--primary-color); margin: 20px auto 0; border-radius: 2px;
         }
         
-        /* 网格布局 */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         
-        /* 卡片样式优化 */
         .feature-card { 
             background-color: var(--card-bg); padding: 40px 30px; border-radius: 20px; 
             border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: all 0.5s var(--apple-ease);
+            transition: transform 0.4s var(--apple-ease), border-color 0.4s;
         }
         .feature-card:hover { 
-            transform: translateY(-10px) scale(1.02); /* 悬停上浮 */
+            transform: translateY(-8px);
             border-color: rgba(0, 242, 255, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 242, 255, 0.1);
             background-color: #1a1a1a;
         }
         .feature-card h3 { color: var(--primary-color); margin-top: 0; font-size: 1.5rem; margin-bottom: 15px; }
         .feature-card p, .feature-card li { color: #bbb; }
 
-        /* 流程步骤 (Process) */
+        /* Process Steps */
         .process-steps { display: flex; flex-wrap: wrap; justify-content: space-between; text-align: center; gap: 30px; }
         .step { flex: 1; min-width: 220px; position: relative; }
         .step-num { 
@@ -170,29 +150,28 @@
         }
         .step-title { font-weight: bold; font-size: 1.3rem; position: relative; z-index: 1; color: #fff; margin-bottom: 10px;}
 
-        /* FAQ 样式 */
+        /* FAQ */
         details { 
             background: var(--card-bg); margin-bottom: 15px; border-radius: 12px; 
             border: 1px solid rgba(255,255,255,0.05); overflow: hidden; 
-            transition: all 0.3s ease;
+            transition: background 0.3s;
         }
         details[open] { border-color: rgba(0, 242, 255, 0.3); background: #1a1a1a; }
-        summary { padding: 25px; cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; transition: color 0.3s; }
+        summary { padding: 25px; cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary:hover { color: var(--primary-color); }
         summary::-webkit-details-marker { display: none; }
-        summary::after { content: '+'; font-size: 1.5rem; color: var(--primary-color); transition: transform 0.3s var(--bounce-ease); }
-        details[open] summary::after { content: '+'; transform: rotate(45deg); /* 旋转加号变叉号 */ }
-        .faq-content { padding: 0 25px 25px; color: #bbb; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 0; padding-top: 20px; animation: fadeInUpHero 0.5s var(--apple-ease);}
+        summary::after { content: '+'; font-size: 1.5rem; color: var(--primary-color); transition: transform 0.3s; }
+        details[open] summary::after { transform: rotate(45deg); }
+        .faq-content { padding: 0 25px 25px; color: #bbb; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;}
 
         /* Footer */
         footer { background-color: #050505; border-top: 1px solid rgba(255,255,255,0.1); padding: 80px 10% 40px; text-align: center; color: #666; font-size: 0.9rem; }
 
-        /* 移动端优化 */
+        /* Mobile Fixes */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             section { padding: 60px 5%; }
-            header { flex-direction: column; gap: 15px; padding: 15px; backdrop-filter: saturate(180%) blur(30px); }
-            .process-steps { flex-direction: column; }
+            header { flex-direction: column; gap: 15px; padding: 15px; }
             h2 { font-size: 2rem; }
         }
     </style>
@@ -273,6 +252,7 @@
                 <div class="step-title" data-lang="es">Consulta</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">填写表单，告诉我你的预算和用途。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">Fill out the form with your budget.</p>
+                <p data-lang="es" style="font-size:0.9rem; color:#888;">Complete el formulario.</p>
             </div>
             <div class="step animate-on-scroll delay-2">
                 <div class="step-num">02</div>
@@ -281,6 +261,7 @@
                 <div class="step-title" data-lang="es">Selección</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">我为你出具最优配置单，确认无误。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">I create the perfect parts list for you.</p>
+                <p data-lang="es" style="font-size:0.9rem; color:#888;">Selección de piezas.</p>
             </div>
             <div class="step animate-on-scroll delay-3">
                 <div class="step-num">03</div>
@@ -289,6 +270,7 @@
                 <div class="step-title" data-lang="es">Armado</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">精心组装，并进行压力测试确保稳定。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">Professional assembly and stress testing.</p>
+                <p data-lang="es" style="font-size:0.9rem; color:#888;">Montaje profesional.</p>
             </div>
             <div class="step animate-on-scroll delay-4">
                 <div class="step-num">04</div>
@@ -297,6 +279,7 @@
                 <div class="step-title" data-lang="es">Entrega</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">Flushing 可送货或自取。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">Local pickup or delivery in Flushing.</p>
+                <p data-lang="es" style="font-size:0.9rem; color:#888;">Recogida local.</p>
             </div>
         </div>
     </section>
@@ -326,48 +309,46 @@
                 <h3 data-lang="en">BYO Parts</h3>
                 <h3 data-lang="zh">自带配件组装</h3>
                 <h3 data-lang="es">Trae tus Piezas</h3>
-                
                 <div style="font-size: 3rem; font-weight: 800; margin: 20px 0; letter-spacing: -2px;">
                     <span style="text-decoration: line-through; font-size: 1.5rem; color: #666; font-weight: normal;">$100</span>
                     $80 <span style="font-size: 1rem; color: #888; font-weight: normal; letter-spacing: 0;">/ tower</span>
                 </div>
-                
                 <ul style="text-align: left; margin-top: 30px; color: #ccc; line-height: 2.2; padding-left: 20px;">
                     <li data-lang="zh">✅ 你买配件，我来装</li>
                     <li data-lang="zh">✅ 基础风道优化</li>
                     <li data-lang="zh">✅ 背部走线整理</li>
                     <li data-lang="zh">✅ 系统安装与驱动调试</li>
-                    
                     <li data-lang="en">✅ You buy, I build</li>
                     <li data-lang="en">✅ Cable Management</li>
                     <li data-lang="en">✅ Windows Install</li>
+                    <li data-lang="es">✅ Tú compras, yo armo</li>
+                    <li data-lang="es">✅ Gestión de cables</li>
                 </ul>
             </div>
 
-            <div class="feature-card animate-on-scroll delay-2" style="border-top: 3px solid var(--primary-color); background-color: #1a1a1a; position: relative; overflow: hidden;">
+            <div class="feature-card animate-on-scroll delay-2" style="border-top: 3px solid var(--primary-color); background-color: #1a1a1a; position: relative;">
                 <div style="position: absolute; top: 20px; right: 20px; background: var(--primary-color); color: #000; padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
-                    <span data-lang="zh">推荐 / Best Value</span>
+                    <span data-lang="zh">最推荐 / Best Value</span>
+                    <span data-lang="en">Best Value</span>
+                    <span data-lang="es">Mejor Valor</span>
                 </div>
                 <h3 data-lang="en">Full Custom Build</h3>
                 <h3 data-lang="zh">全案定制服务</h3>
                 <h3 data-lang="es">Servicio Completo</h3>
-                
                 <div style="font-size: 3rem; font-weight: 800; margin: 20px 0; color: var(--primary-color); letter-spacing: -2px;">
                     <span style="text-decoration: line-through; font-size: 1.5rem; color: #666; font-weight: normal;">$150</span>
                     $120 <span style="font-size: 1rem; color: #888; font-weight: normal; letter-spacing: 0;">/ tower</span>
                 </div>
-                
                 <ul style="text-align: left; margin-top: 30px; color: #ccc; line-height: 2.2; padding-left: 20px;">
                     <li data-lang="zh">⭐ <b>包含配置咨询 (价值$50)</b></li>
                     <li data-lang="zh">✅ 我帮你选件、下单、验货</li>
                     <li data-lang="zh">✅ 包含 BIOS 超频/降压优化</li>
                     <li data-lang="zh">✅ 适合：水冷/海景房/特效工作站</li>
-                    <li data-lang="zh">✅ <b>小白也能拥有最好的</b></li>
-
                     <li data-lang="en">⭐ <b>Consultation Included</b></li>
                     <li data-lang="en">✅ Parts selection & ordering</li>
                     <li data-lang="en">✅ BIOS Optimization</li>
-                    <li data-lang="en">✅ Perfect for RGB/Water Cooling</li>
+                    <li data-lang="es">⭐ <b>Consulta Incluida</b></li>
+                    <li data-lang="es">✅ Selección de piezas</li>
                 </ul>
             </div>
 
@@ -375,26 +356,22 @@
                 <h3 data-lang="en">Upgrade / Fix</h3>
                 <h3 data-lang="zh">老机升级 & 维护</h3>
                 <h3 data-lang="es">Actualización</h3>
-                
-                <div style="font-size: 3rem; font-weight: 800; margin: 20px 0; letter-spacing: -2px;">
-                    $50+
-                </div>
-                
+                <div style="font-size: 3rem; font-weight: 800; margin: 20px 0; letter-spacing: -2px;">$50+</div>
                 <ul style="text-align: left; margin-top: 30px; color: #ccc; line-height: 2.2; padding-left: 20px;">
                     <li data-lang="zh">✅ 显卡/内存/硬盘升级</li>
                     <li data-lang="zh">✅ 清灰换硅脂 (降低温度)</li>
                     <li data-lang="zh">✅ 系统重装 / 蓝屏排查</li>
-                    
                     <li data-lang="en">✅ GPU/RAM Upgrades</li>
                     <li data-lang="en">✅ Deep Cleaning</li>
-                    <li data-lang="en">✅ Troubleshooting</li>
+                    <li data-lang="es">✅ Actualización de GPU/RAM</li>
+                    <li data-lang="es">✅ Limpieza Profunda</li>
                 </ul>
             </div>
         </div>
-        
         <p class="animate-on-scroll" style="margin-top: 50px; font-size: 0.9rem; color: #666; text-align: center;">
             <span data-lang="zh">* 硬件费用需由客户承担。复杂的分体水冷方案请单独询价。</span>
             <span data-lang="en">* Hardware costs are separate. Custom loop water cooling requires a custom quote.</span>
+            <span data-lang="es">* Los costos de hardware son separados.</span>
         </p>
     </section>
 
@@ -403,14 +380,14 @@
         <h2 data-lang="zh" class="animate-on-scroll">开始你的装机之旅</h2>
         <h2 data-lang="es" class="animate-on-scroll">Comienza tu Construcción</h2>
         
-        <p data-lang="en" class="animate-on-scroll" style="margin-bottom:40px; text-align: center; max-width: 600px; margin: 0 auto 50px;">Fill out the form below to let me know your budget and needs.</p>
         <p data-lang="zh" class="animate-on-scroll" style="margin-bottom:40px; text-align: center; max-width: 600px; margin: 0 auto 50px;">花 1 分钟填个表，让我知道你的预算和用途，我会尽快给你出方案。</p>
-        <p data-lang="es" class="animate-on-scroll" style="margin-bottom:40px; text-align: center; max-width: 600px; margin: 0 auto 50px;">Complete el formulario a continuación.</p>
+        <p data-lang="en" class="animate-on-scroll" style="margin-bottom:40px; text-align: center; max-width: 600px; margin: 0 auto 50px;">Fill out the form below.</p>
+        <p data-lang="es" class="animate-on-scroll" style="margin-bottom:40px; text-align: center; max-width: 600px; margin: 0 auto 50px;">Complete el formulario.</p>
 
         <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start;">
             
-            <div class="animate-on-scroll delay-1" style="flex: 2; min-width: 300px; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeGwzkBnqqbm3ERqCUiDfUIvUot5sP3bp1epI84PPgFZFfQMQ/viewform?embedded=true" width="100%" height="2155" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            <div class="animate-on-scroll delay-1" style="flex: 2; min-width: 300px; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); min-height: 800px;">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeGwzkBnqqbm3ERqCUiDfUIvUot5sP3bp1epI84PPgFZFfQMQ/viewform?embedded=true" width="100%" height="2155" frameborder="0" marginheight="0" marginwidth="0" loading="lazy">Loading…</iframe>
             </div>
 
             <div class="animate-on-scroll delay-2 feature-card" style="flex: 1; min-width: 250px; background-color: #1a1a1a; border: 1px solid rgba(255,255,255,0.1);">
@@ -431,6 +408,7 @@
                     <p style="font-size: 0.85rem; color: #888; line-height: 1.5;">
                         <span data-lang="zh">💡 忙碌时可能无法接听电话，建议优先短信或微信留言，看到必回。</span>
                         <span data-lang="en">💡 Please text or WeChat first for faster response.</span>
+                        <span data-lang="es">💡 Envíe un mensaje de texto para una respuesta más rápida.</span>
                     </p>
                 </div>
             </div>
@@ -452,39 +430,43 @@
                 <div class="faq-content">
                     <p data-lang="zh">完全可以！如果你已经买好了配件，我提供纯组装与理线服务（$80起）。</p>
                     <p data-lang="en">Absolutely! If you have the parts, I offer assembly and cable management services starting at $80.</p>
+                    <p data-lang="es">¡Absolutamente!</p>
                 </div>
             </details>
-
             <details class="animate-on-scroll delay-2">
                 <summary>
                     <span data-lang="zh">一般需要多久能装好？</span>
                     <span data-lang="en">How long does it take?</span>
+                    <span data-lang="es">¿Cuánto tiempo tarda?</span>
                 </summary>
                 <div class="faq-content">
                     <p data-lang="zh">零件到齐后，通常在 24-48 小时内完成组装和测试。如果急需，请提前告知。</p>
                     <p data-lang="en">Usually 24-48 hours after all parts are received.</p>
+                    <p data-lang="es">Generalmente 24-48 horas.</p>
                 </div>
             </details>
-
             <details class="animate-on-scroll delay-3">
                 <summary>
                     <span data-lang="zh">你有保修吗？</span>
                     <span data-lang="en">Do you offer warranty?</span>
+                    <span data-lang="es">¿Ofrecen garantía?</span>
                 </summary>
                 <div class="faq-content">
-                    <p data-lang="zh">硬件享受厂商原厂保修（我会帮你把盒子和发票留好）。如果是我的安装问题（如接线松动），永久免费修复。</p>
+                    <p data-lang="zh">硬件享受厂商原厂保修。如果是我的安装问题（如接线松动），永久免费修复。</p>
                     <p data-lang="en">Hardware comes with manufacturer warranty. I provide lifetime support for any assembly-related issues.</p>
+                    <p data-lang="es">Garantía del fabricante para hardware.</p>
                 </div>
             </details>
-            
             <details class="animate-on-scroll delay-4">
                 <summary>
                     <span data-lang="zh">你住在 Flushing 哪里？方便停车吗？</span>
                     <span data-lang="en">Where in Flushing? Is parking easy?</span>
+                    <span data-lang="es">¿Dónde en Flushing?</span>
                 </summary>
                 <div class="faq-content">
                     <p data-lang="zh">我在 Flushing 中心区域（具体地址预约后发送）。如果你开车来送/取机箱，楼下可以短暂停留，非常方便。</p>
                     <p data-lang="en">Central Flushing. Easy curb-side drop-off and pickup available.</p>
+                    <p data-lang="es">Flushing central.</p>
                 </div>
             </details>
         </div>
@@ -497,7 +479,6 @@
                 <p style="color: #888; font-size: 0.9rem; line-height: 1.8; margin-top: 20px;">
                     Build with passion in Flushing, NY.<br>
                     为创作者与玩家打造的极致主机。<br>
-                    <br>
                     <span style="color: #555; font-weight: 600;">Focus on Performance & Esthetics.</span>
                 </p>
             </div>
@@ -510,11 +491,15 @@
                         3. 定金：定制装机需预付配件款或定金，中途跑单定金不退。
                     </span>
                     <span data-lang="en">
-                        1. Hardware Warranty: Provided by manufacturers. I am not responsible for Dead-on-Arrival (DOA) parts but will assist in returns.<br>
-                        2. Data: Please backup your data before any service. I am not responsible for data loss.<br>
-                        3. Deposit: Non-refundable deposit required for custom orders.
+                        1. Hardware Warranty: Provided by manufacturers. I am not responsible for Dead-on-Arrival (DOA) parts.<br>
+                        2. Data: Please backup your data.<br>
+                        3. Deposit: Non-refundable deposit required.
                     </span>
-                    <span data-lang="es">1. Garantía de Hardware. 2. Datos. 3. Depósito.</span>
+                    <span data-lang="es">
+                        1. Garantía de Hardware: Proporcionada por los fabricantes.<br>
+                        2. Datos: Por favor haga una copia de seguridad.<br>
+                        3. Depósito: Depósito no reembolsable requerido.
+                    </span>
                 </p>
             </div>
             <div style="flex: 0 0 150px;">
@@ -527,12 +512,11 @@
             </div>
         </div>
         <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: #444; font-size: 0.8rem;">
-            &copy; 2025 Henry Custom PC. All Rights Reserved. <br> Built for Flushing.
+            &copy; 2025 Henry Custom PC. All Rights Reserved.
         </div>
     </footer>
 
     <script>
-        // 语言切换功能
         function switchLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('[data-lang]').forEach(el => el.classList.remove('active-lang'));
@@ -540,34 +524,30 @@
             document.querySelectorAll(`.lang-btn[onclick="switchLang('${lang}')"]`).forEach(btn => btn.classList.add('active'));
         }
 
-        // 初始化
         window.onload = function() {
-            // 1. 自动设置语言
+            // Auto Language
             const userLang = navigator.language || navigator.userLanguage; 
             let targetLang = 'en'; 
             if (userLang.startsWith('zh')) { targetLang = 'zh'; }
             else if (userLang.startsWith('es')) { targetLang = 'es'; }
             switchLang(targetLang);
 
-            // 2. 🍎 滚动动画触发器 (Intersection Observer)
+            // Scroll Animation
             const observerOptions = {
-                root: null, // 使用视口作为根
-                threshold: 0.15, // 元素出现 15% 时触发
-                rootMargin: "0px 0px -50px 0px" // 稍微提前一点触发
+                root: null,
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // 当元素进入视口，添加 .is-visible 类
                         entry.target.classList.add('is-visible');
-                        // 可选：动画只触发一次，触发后取消观察 (性能更好)
                         observer.unobserve(entry.target); 
                     }
                 });
             }, observerOptions);
 
-            // 找到所有带有 .animate-on-scroll 的元素并开始观察
             document.querySelectorAll('.animate-on-scroll').forEach((el) => {
                 observer.observe(el);
             });
@@ -575,3 +555,156 @@
     </script>
 </body>
 </html>
+    <div id="bot-launcher" onclick="toggleChat()" style="
+        position: fixed; bottom: 25px; right: 25px; 
+        width: 60px; height: 60px; 
+        background: var(--primary-color); 
+        border-radius: 50%; 
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); 
+        cursor: pointer; z-index: 9999;
+        display: flex; justify-content: center; align-items: center;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    ">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+            <circle cx="12" cy="16" r="2"></circle>
+            <path d="M12 11V7"></path>
+            <path d="M7 7h10"></path>
+        </svg>
+    </div>
+
+    <div id="bot-tooltip" style="
+        position: fixed; bottom: 95px; right: 25px;
+        background: #fff; color: #000; padding: 10px 15px;
+        border-radius: 10px; font-size: 0.9rem; font-weight: bold;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 9998;
+        opacity: 0; transform: translateY(10px); pointer-events: none;
+        transition: all 0.5s ease;
+    ">
+        👋 Need Help? / 需要帮助吗？
+        <div style="position: absolute; bottom: -6px; right: 20px; width: 12px; height: 12px; background: #fff; transform: rotate(45deg);"></div>
+    </div>
+
+    <div id="bot-window" style="
+        position: fixed; bottom: 100px; right: 25px;
+        width: 300px; background: #1a1a1a; 
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 15px; overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 9999;
+        opacity: 0; transform: scale(0.9) translateY(20px); pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex; flex-direction: column;
+    ">
+        <div style="background: rgba(0, 242, 255, 0.1); padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: var(--primary-color); font-weight: bold;">Henry's Assistant</span>
+            <span onclick="toggleChat()" style="cursor: pointer; color: #666; font-size: 1.2rem;">&times;</span>
+        </div>
+
+        <div style="padding: 20px;">
+            <p style="color: #ccc; font-size: 0.85rem; margin-top: 0; margin-bottom: 15px;">
+                遇到了问题？或者发现了 Bug？请告诉我，我会直接反馈给 Henry。
+            </p>
+            
+            <form id="bot-form" action="https://formspree.io/f/https://formspree.io/f/xeoyldoq" method="POST">
+                
+                <input type="email" name="email" placeholder="Your Email / 你的邮箱" required style="
+                    width: 100%; padding: 10px; margin-bottom: 10px;
+                    background: #222; border: 1px solid #333; color: #fff;
+                    border-radius: 5px; box-sizing: border-box; font-family: inherit;
+                ">
+                
+                <textarea name="message" placeholder="Describe the issue... / 描述问题..." required style="
+                    width: 100%; height: 80px; padding: 10px; margin-bottom: 15px;
+                    background: #222; border: 1px solid #333; color: #fff;
+                    border-radius: 5px; box-sizing: border-box; font-family: inherit; resize: none;
+                "></textarea>
+
+                <button id="bot-submit-btn" type="submit" style="
+                    width: 100%; padding: 10px; background: var(--primary-color);
+                    color: #000; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;
+                    transition: 0.3s;
+                ">Send Message / 发送</button>
+                
+                <p id="bot-status" style="display: none; font-size: 0.8rem; text-align: center; margin-top: 10px;"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 1. 3分钟计时器 (3 * 60 * 1000 = 180000 毫秒)
+        // 为了方便测试，你可以先把 180000 改成 3000 (3秒) 试试效果
+        setTimeout(() => {
+            const tooltip = document.getElementById('bot-tooltip');
+            // 只有当聊天窗口没打开时才显示提示
+            if (document.getElementById('bot-window').style.opacity === '0') {
+                tooltip.style.opacity = '1';
+                tooltip.style.transform = 'translateY(0)';
+            }
+        }, 180000); // 180000 = 3分钟
+
+        // 2. 开关聊天窗口
+        function toggleChat() {
+            const win = document.getElementById('bot-window');
+            const tooltip = document.getElementById('bot-tooltip');
+            const launcher = document.getElementById('bot-launcher');
+
+            if (win.style.opacity === '0') {
+                // 打开
+                win.style.opacity = '1';
+                win.style.pointerEvents = 'all';
+                win.style.transform = 'scale(1) translateY(0)';
+                // 隐藏提示气泡
+                tooltip.style.opacity = '0';
+                // 按钮动效
+                launcher.style.transform = 'rotate(90deg) scale(0.9)';
+            } else {
+                // 关闭
+                win.style.opacity = '0';
+                win.style.pointerEvents = 'none';
+                win.style.transform = 'scale(0.9) translateY(20px)';
+                launcher.style.transform = 'rotate(0deg) scale(1)';
+            }
+        }
+
+        // 3. 处理表单无刷新提交 (AJAX)
+        const form = document.getElementById("bot-form");
+        
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const status = document.getElementById("bot-status");
+            const btn = document.getElementById("bot-submit-btn");
+            const data = new FormData(event.target);
+            
+            btn.innerHTML = "Sending...";
+            btn.disabled = true;
+
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    status.innerHTML = "✅ Sent! Henry will reply soon.";
+                    status.style.color = "#00f2ff";
+                    status.style.display = "block";
+                    form.reset();
+                    btn.innerHTML = "Send Message";
+                    btn.disabled = false;
+                    // 2秒后自动关闭窗口
+                    setTimeout(() => toggleChat(), 2000);
+                } else {
+                    status.innerHTML = "❌ Oops! Please email xiaevan1998@gmail.com";
+                    status.style.color = "red";
+                    status.style.display = "block";
+                    btn.disabled = false;
+                }
+            }).catch(error => {
+                status.innerHTML = "❌ Error sending message.";
+                status.style.display = "block";
+                btn.disabled = false;
+            });
+        }
+        form.addEventListener("submit", handleSubmit);
+    </script>
