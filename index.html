@@ -75,6 +75,7 @@
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
 
         /* ============================
            页面区块
@@ -516,45 +517,6 @@
         </div>
     </footer>
 
-    <script>
-        function switchLang(lang) {
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('[data-lang]').forEach(el => el.classList.remove('active-lang'));
-            document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => el.classList.add('active-lang'));
-            document.querySelectorAll(`.lang-btn[onclick="switchLang('${lang}')"]`).forEach(btn => btn.classList.add('active'));
-        }
-
-        window.onload = function() {
-            // Auto Language
-            const userLang = navigator.language || navigator.userLanguage; 
-            let targetLang = 'en'; 
-            if (userLang.startsWith('zh')) { targetLang = 'zh'; }
-            else if (userLang.startsWith('es')) { targetLang = 'es'; }
-            switchLang(targetLang);
-
-            // Scroll Animation
-            const observerOptions = {
-                root: null,
-                threshold: 0.15,
-                rootMargin: "0px 0px -50px 0px"
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target); 
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-                observer.observe(el);
-            });
-        };
-    </script>
-</body>
-</html>
     <div id="bot-launcher" onclick="toggleChat()" style="
         position: fixed; bottom: 25px; right: 25px; 
         width: 60px; height: 60px; 
@@ -581,13 +543,15 @@
         opacity: 0; transform: translateY(10px); pointer-events: none;
         transition: all 0.5s ease;
     ">
-        👋 Need Help? / 需要帮助吗？
+        <span data-lang="en">👋 Need Help?</span>
+        <span data-lang="zh">👋 需要帮助吗？</span>
+        <span data-lang="es">👋 ¿Necesitas ayuda?</span>
         <div style="position: absolute; bottom: -6px; right: 20px; width: 12px; height: 12px; background: #fff; transform: rotate(45deg);"></div>
     </div>
 
     <div id="bot-window" style="
         position: fixed; bottom: 100px; right: 25px;
-        width: 300px; background: #1a1a1a; 
+        width: 320px; background: #1a1a1a; 
         border: 1px solid rgba(255,255,255,0.1);
         border-radius: 15px; overflow: hidden;
         box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 9999;
@@ -596,34 +560,56 @@
         display: flex; flex-direction: column;
     ">
         <div style="background: rgba(0, 242, 255, 0.1); padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
-            <span style="color: var(--primary-color); font-weight: bold;">Henry's Assistant</span>
+            <strong style="color: var(--primary-color);">
+                <span data-lang="en">Henry's Assistant</span>
+                <span data-lang="zh">Henry 的小助手</span>
+                <span data-lang="es">Asistente de Henry</span>
+            </strong>
             <span onclick="toggleChat()" style="cursor: pointer; color: #666; font-size: 1.2rem;">&times;</span>
         </div>
 
         <div style="padding: 20px;">
-            <p style="color: #ccc; font-size: 0.85rem; margin-top: 0; margin-bottom: 15px;">
-                遇到了问题？或者发现了 Bug？请告诉我，我会直接反馈给 Henry。
+            <p style="color: #ccc; font-size: 0.85rem; margin-top: 0; margin-bottom: 15px; line-height: 1.5;">
+                <span data-lang="en">Found a bug or have a question? Let me know and I'll report it to Henry directly.</span>
+                <span data-lang="zh">遇到了问题？或者发现了 Bug？请告诉我，我会直接反馈给 Henry。</span>
+                <span data-lang="es">¿Encontraste un error o tienes una pregunta? Házmelo saber e informaré a Henry.</span>
             </p>
             
-            <form id="bot-form" action="https://formspree.io/f/https://formspree.io/f/xeoyldoq" method="POST">
+            <form id="bot-form" action="https://formspree.io/f/xeoyldoq" method="POST">
                 
-                <input type="email" name="email" placeholder="Your Email / 你的邮箱" required style="
-                    width: 100%; padding: 10px; margin-bottom: 10px;
-                    background: #222; border: 1px solid #333; color: #fff;
-                    border-radius: 5px; box-sizing: border-box; font-family: inherit;
-                ">
+                <div style="margin-bottom: 10px;">
+                    <label style="color: #666; font-size: 0.75rem; display: block; margin-bottom: 5px;">
+                        <span data-lang="en">Your Email</span>
+                        <span data-lang="zh">你的邮箱</span>
+                        <span data-lang="es">Tu Correo</span>
+                    </label>
+                    <input type="email" name="email" required style="
+                        width: 100%; padding: 10px; background: #222; border: 1px solid #333; color: #fff;
+                        border-radius: 5px; box-sizing: border-box; font-family: inherit;
+                    ">
+                </div>
                 
-                <textarea name="message" placeholder="Describe the issue... / 描述问题..." required style="
-                    width: 100%; height: 80px; padding: 10px; margin-bottom: 15px;
-                    background: #222; border: 1px solid #333; color: #fff;
-                    border-radius: 5px; box-sizing: border-box; font-family: inherit; resize: none;
-                "></textarea>
+                <div style="margin-bottom: 15px;">
+                    <label style="color: #666; font-size: 0.75rem; display: block; margin-bottom: 5px;">
+                        <span data-lang="en">Message</span>
+                        <span data-lang="zh">留言内容</span>
+                        <span data-lang="es">Mensaje</span>
+                    </label>
+                    <textarea name="message" required style="
+                        width: 100%; height: 80px; padding: 10px; background: #222; border: 1px solid #333; color: #fff;
+                        border-radius: 5px; box-sizing: border-box; font-family: inherit; resize: none;
+                    "></textarea>
+                </div>
 
                 <button id="bot-submit-btn" type="submit" style="
-                    width: 100%; padding: 10px; background: var(--primary-color);
+                    width: 100%; padding: 12px; background: var(--primary-color);
                     color: #000; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;
                     transition: 0.3s;
-                ">Send Message / 发送</button>
+                ">
+                    <span data-lang="en">Send Message</span>
+                    <span data-lang="zh">发送信息</span>
+                    <span data-lang="es">Enviar Mensaje</span>
+                </button>
                 
                 <p id="bot-status" style="display: none; font-size: 0.8rem; text-align: center; margin-top: 10px;"></p>
             </form>
@@ -631,34 +617,64 @@
     </div>
 
     <script>
-        // 1. 3分钟计时器 (3 * 60 * 1000 = 180000 毫秒)
-        // 为了方便测试，你可以先把 180000 改成 3000 (3秒) 试试效果
-        setTimeout(() => {
-            const tooltip = document.getElementById('bot-tooltip');
-            // 只有当聊天窗口没打开时才显示提示
-            if (document.getElementById('bot-window').style.opacity === '0') {
-                tooltip.style.opacity = '1';
-                tooltip.style.transform = 'translateY(0)';
-            }
-        }, 180000); // 180000 = 3分钟
+        // 1. Language Switcher
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('[data-lang]').forEach(el => el.classList.remove('active-lang'));
+            document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => el.classList.add('active-lang'));
+            document.querySelectorAll(`.lang-btn[onclick="switchLang('${lang}')"]`).forEach(btn => btn.classList.add('active'));
+        }
 
-        // 2. 开关聊天窗口
+        // 2. Init & Scroll Animation
+        window.onload = function() {
+            // Auto Language
+            const userLang = navigator.language || navigator.userLanguage; 
+            let targetLang = 'en'; 
+            if (userLang.startsWith('zh')) { targetLang = 'zh'; }
+            else if (userLang.startsWith('es')) { targetLang = 'es'; }
+            switchLang(targetLang);
+
+            // Scroll Observer
+            const observerOptions = {
+                root: null, threshold: 0.15, rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
+
+            // 3. Bot Timer (3 Minutes)
+            setTimeout(() => {
+                const tooltip = document.getElementById('bot-tooltip');
+                if (document.getElementById('bot-window').style.opacity === '0') {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.transform = 'translateY(0)';
+                }
+            }, 180000); 
+        };
+
+        // 4. Bot Toggle Logic
         function toggleChat() {
             const win = document.getElementById('bot-window');
             const tooltip = document.getElementById('bot-tooltip');
             const launcher = document.getElementById('bot-launcher');
 
             if (win.style.opacity === '0') {
-                // 打开
                 win.style.opacity = '1';
                 win.style.pointerEvents = 'all';
                 win.style.transform = 'scale(1) translateY(0)';
-                // 隐藏提示气泡
                 tooltip.style.opacity = '0';
-                // 按钮动效
                 launcher.style.transform = 'rotate(90deg) scale(0.9)';
             } else {
-                // 关闭
                 win.style.opacity = '0';
                 win.style.pointerEvents = 'none';
                 win.style.transform = 'scale(0.9) translateY(20px)';
@@ -666,45 +682,54 @@
             }
         }
 
-        // 3. 处理表单无刷新提交 (AJAX)
+        // 5. Bot Form Submit
         const form = document.getElementById("bot-form");
-        
-        async function handleSubmit(event) {
+        form.addEventListener("submit", async (event) => {
             event.preventDefault();
             const status = document.getElementById("bot-status");
             const btn = document.getElementById("bot-submit-btn");
             const data = new FormData(event.target);
             
-            btn.innerHTML = "Sending...";
+            const isZh = document.querySelector('[data-lang="zh"]').classList.contains('active-lang');
+            const isEs = document.querySelector('[data-lang="es"]').classList.contains('active-lang');
+            
+            btn.style.opacity = "0.7";
+            btn.innerHTML = isZh ? "发送中..." : (isEs ? "Enviando..." : "Sending...");
             btn.disabled = true;
 
             fetch(event.target.action, {
                 method: form.method,
                 body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: { 'Accept': 'application/json' }
             }).then(response => {
                 if (response.ok) {
-                    status.innerHTML = "✅ Sent! Henry will reply soon.";
+                    status.innerHTML = isZh ? "✅ 发送成功！Henry 会尽快回复。" : (isEs ? "✅ ¡Enviado! Henry responderá pronto." : "✅ Sent! Henry will reply soon.");
                     status.style.color = "#00f2ff";
                     status.style.display = "block";
                     form.reset();
-                    btn.innerHTML = "Send Message";
-                    btn.disabled = false;
-                    // 2秒后自动关闭窗口
-                    setTimeout(() => toggleChat(), 2000);
+                    setTimeout(() => {
+                        toggleChat();
+                        btn.disabled = false;
+                        btn.style.opacity = "1";
+                        btn.innerHTML = '<span data-lang="en" class="active-lang">Send Message</span><span data-lang="zh">发送信息</span><span data-lang="es">Enviar Mensaje</span>';
+                        // Refresh lang
+                        const currentLang = isZh ? 'zh' : (isEs ? 'es' : 'en');
+                        switchLang(currentLang); 
+                    }, 2000);
                 } else {
-                    status.innerHTML = "❌ Oops! Please email xiaevan1998@gmail.com";
+                    status.innerHTML = "❌ Error. Please email directly.";
                     status.style.color = "red";
                     status.style.display = "block";
                     btn.disabled = false;
+                    btn.style.opacity = "1";
                 }
             }).catch(error => {
-                status.innerHTML = "❌ Error sending message.";
+                status.innerHTML = "❌ Network Error.";
                 status.style.display = "block";
                 btn.disabled = false;
+                btn.style.opacity = "1";
             });
-        }
-        form.addEventListener("submit", handleSubmit);
+        });
     </script>
+</body>
+</html>
