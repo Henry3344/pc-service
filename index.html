@@ -413,19 +413,53 @@
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2025 Henry Custom PC. Built in NYC.</p>
-        <div style="margin-top: 15px;">
-            <p style="margin-bottom:5px; font-size:0.8rem; color:#555;">
-                <span data-lang="en">Not your language?</span>
-                <span data-lang="zh">不是你的语言？</span>
-                <span data-lang="es">¿No es tu idioma?</span>
-            </p>
-            <div class="lang-switch" style="justify-content: center;">
-                <button class="lang-btn" onclick="switchLang('en')">English</button>
-                <button class="lang-btn" onclick="switchLang('zh')">中文</button>
-                <button class="lang-btn" onclick="switchLang('es')">Español</button>
+     <footer style="background-color: #050505; border-top: 1px solid #222; padding: 50px 20px;">
+        
+        <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; text-align: left;">
+            
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: var(--primary-color); margin-top: 0; text-transform: uppercase; letter-spacing: 2px;">Henry Custom PC</h3>
+                <p style="color: #888; font-size: 0.9rem; line-height: 1.8;">
+                    Build with passion in Flushing, NY.<br>
+                    为创作者与玩家打造的极致主机。<br>
+                    <br>
+                    <span style="color: #555;">Focus on Performance & Esthetics.</span>
+                </p>
             </div>
+
+            <div style="flex: 1; min-width: 300px; font-size: 0.8rem; color: #555; line-height: 1.5;">
+                <h4 style="color: #888; margin-top: 0;">Disclaimer / 免责声明</h4>
+                <p>
+                    <span data-lang="zh">
+                        1. 硬件保修：所有硬件均由其制造商提供保修。如果硬件出厂即为故障品(DOA)，我将协助进行退换货，但不承担硬件本身的成本。<br>
+                        2. 数据安全：维修或升级前，请务必自行备份重要数据。我对数据丢失概不负责。<br>
+                        3. 定金：定制装机需预付配件款或定金，中途跑单定金不退。
+                    </span>
+                    <span data-lang="en">
+                        1. Hardware Warranty: Provided by manufacturers. I am not responsible for Dead-on-Arrival (DOA) parts but will assist in returns.<br>
+                        2. Data: Please backup your data before any service. I am not responsible for data loss.<br>
+                        3. Deposit: Non-refundable deposit required for custom orders.
+                    </span>
+                    <span data-lang="es">
+                         1. Garantía de Hardware: Proporcionada por los fabricantes.<br>
+                         2. Datos: Por favor haga una copia de seguridad de sus datos.<br>
+                         3. Depósito: Depósito no reembolsable requerido.
+                    </span>
+                </p>
+            </div>
+
+            <div style="flex: 0 0 150px;">
+                <h4 style="color: #888; margin-top: 0;">Language</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="lang-btn" onclick="switchLang('en')" style="text-align: left;">🇺🇸 English</button>
+                    <button class="lang-btn" onclick="switchLang('zh')" style="text-align: left;">🇨🇳 中文</button>
+                    <button class="lang-btn" onclick="switchLang('es')" style="text-align: left;">🇪🇸 Español</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #1a1a1a; color: #444; font-size: 0.8rem;">
+            &copy; 2025 Henry Custom PC. All Rights Reserved.
         </div>
     </footer>
 
