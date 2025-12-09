@@ -10,7 +10,7 @@
            ============================ */
         :root {
             --primary-color: #00f2ff; /* 赛博朋克蓝 */
-            --secondary-color: #ff0055; /* 强调色 */
+            --secondary-color: #ff0055; /* 促销强调色 */
             --bg-color: #121212;
             --card-bg: #1e1e1e;
             --text-color: #e0e0e0;
@@ -53,19 +53,19 @@
         .hero {
             height: 90vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
-            /* 背景图：建议换成你自己的装机帅图 */
+            /* 背景图：之后可以换成你自己的装机帅图 */
             background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(18,18,18,1)), url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1920&q=80');
             background-size: cover; background-position: center; margin-top: 60px;
         }
         .hero h1 { 
-            font-size: 3rem; margin-bottom: 10px; 
+            font-size: 2.5rem; margin-bottom: 10px; 
             text-shadow: 0 0 20px rgba(0, 242, 255, 0.5); 
             line-height: 1.2;
         }
-        .hero p { font-size: 1.2rem; max-width: 700px; color: #ccc; }
+        .hero p { font-size: 1.2rem; max-width: 700px; color: #ccc; margin-bottom: 30px;}
         .btn {
             padding: 15px 40px; background-color: var(--primary-color); color: #000;
-            font-weight: bold; border-radius: 50px; margin-top: 30px; display: inline-block; cursor: pointer;
+            font-weight: bold; border-radius: 50px; display: inline-block; cursor: pointer;
             text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
         }
         .btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 242, 255, 0.6); }
@@ -94,19 +94,7 @@
         }
         .step-title { font-weight: bold; font-size: 1.2rem; position: relative; z-index: 1; color: var(--primary-color); }
 
-        /* 作品展示 (Gallery) */
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .gallery-item { 
-            height: 250px; background-color: #333; border-radius: 10px; overflow: hidden; position: relative;
-            background-size: cover; background-position: center; border: 1px solid #444;
-        }
-        .gallery-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.8);
-            padding: 10px; font-size: 0.9rem; transform: translateY(100%); transition: 0.3s;
-        }
-        .gallery-item:hover .gallery-overlay { transform: translateY(0); }
-
-        /* FAQ */
+        /* FAQ 样式 */
         details { background: var(--card-bg); margin-bottom: 15px; border-radius: 8px; border: 1px solid #333; overflow: hidden; }
         summary { padding: 20px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary::-webkit-details-marker { display: none; }
@@ -115,7 +103,7 @@
         .faq-content { padding: 0 20px 20px; color: #bbb; border-top: 1px solid #333; margin-top: 10px; padding-top: 15px;}
 
         /* Footer */
-        footer { background-color: #080808; padding: 40px; text-align: center; color: #666; font-size: 0.9rem; border-top: 1px solid #222; }
+        footer { background-color: #050505; border-top: 1px solid #222; padding: 50px 20px; text-align: center; color: #666; font-size: 0.9rem; }
 
         /* 移动端优化 */
         @media (max-width: 768px) {
@@ -141,7 +129,7 @@
     <section class="hero">
         <div data-lang="en">
             <h1>Built by a Creator,<br>For Creators & Gamers.</h1>
-            <p>Don't settle for pre-builts. Get a PC tailored to your workflow and games. High Performance. Clean Aesthetics. Flushing Local.</p>
+            <p>Don't settle for pre-builts. Get a PC tailored to your workflow. High Performance. Clean Aesthetics. Flushing Local.</p>
             <a href="#contact" class="btn">Start Your Build</a>
         </div>
         <div data-lang="zh">
@@ -151,7 +139,7 @@
         </div>
         <div data-lang="es">
             <h1>Construido por un Creador,<br>Para Creadores y Gamers.</h1>
-            <p>No te conformes. Obtén una PC adaptada a tu flujo de trabajo y juegos. Alto rendimiento. Estética limpia. Local en Flushing.</p>
+            <p>No te conformes. Obtén una PC adaptada a tu flujo de trabajo. Alto rendimiento. Estética limpia. Local en Flushing.</p>
             <a href="#contact" class="btn">Comenzar</a>
         </div>
     </section>
@@ -202,7 +190,6 @@
                 <div class="step-title" data-lang="es">Consulta</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">填写表单，告诉我你的预算和用途。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">Fill out the form with your budget.</p>
-                <p data-lang="es" style="font-size:0.9rem; color:#888;">Completa el formulario.</p>
             </div>
             <div class="step">
                 <div class="step-num">02</div>
@@ -211,7 +198,6 @@
                 <div class="step-title" data-lang="es">Selección</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">我为你出具最优配置单，确认无误。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">I create the perfect parts list for you.</p>
-                <p data-lang="es" style="font-size:0.9rem; color:#888;">Creo la lista de piezas perfecta.</p>
             </div>
             <div class="step">
                 <div class="step-num">03</div>
@@ -220,7 +206,6 @@
                 <div class="step-title" data-lang="es">Armado</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">精心组装，并进行压力测试确保稳定。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">Professional assembly and stress testing.</p>
-                <p data-lang="es" style="font-size:0.9rem; color:#888;">Montaje profesional y pruebas.</p>
             </div>
             <div class="step">
                 <div class="step-num">04</div>
@@ -229,62 +214,17 @@
                 <div class="step-title" data-lang="es">Entrega</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">Flushing 可送货或自取。</p>
                 <p data-lang="en" style="font-size:0.9rem; color:#888;">Local pickup or delivery in Flushing.</p>
-                <p data-lang="es" style="font-size:0.9rem; color:#888;">Recogida local o entrega.</p>
             </div>
         </div>
     </section>
 
-    <section>
-        <h2 data-lang="en">FAQ</h2>
-        <h2 data-lang="zh">常见问题</h2>
-        <h2 data-lang="es">Preguntas Frecuentes</h2>
-
-        <details>
-            <summary>
-                <span data-lang="zh">我可以自己买配件找你装吗？</span>
-                <span data-lang="en">Can I bring my own parts?</span>
-                <span data-lang="es">¿Puedo traer mis propias piezas?</span>
-            </summary>
-            <div class="faq-content">
-                <p data-lang="zh">完全可以！如果你已经买好了配件，我提供纯组装与理线服务。</p>
-                <p data-lang="en">Absolutely! If you have the parts, I offer assembly and cable management services.</p>
-                <p data-lang="es">¡Absolutamente! Si tienes las piezas, ofrezco servicios de montaje.</p>
-            </div>
-        </details>
-
-        <details>
-            <summary>
-                <span data-lang="zh">一般需要多久能装好？</span>
-                <span data-lang="en">How long does it take?</span>
-                <span data-lang="es">¿Cuánto tiempo tarda?</span>
-            </summary>
-            <div class="faq-content">
-                <p data-lang="zh">零件到齐后，通常在 24-48 小时内完成组装和测试。</p>
-                <p data-lang="en">Usually 24-48 hours after all parts are received.</p>
-                <p data-lang="es">Generalmente 24-48 horas después de recibir las piezas.</p>
-            </div>
-        </details>
-
-        <details>
-            <summary>
-                <span data-lang="zh">你有保修吗？</span>
-                <span data-lang="en">Do you offer warranty?</span>
-                <span data-lang="es">¿Ofrecen garantía?</span>
-            </summary>
-            <div class="faq-content">
-                <p data-lang="zh">所有硬件均享受厂商原厂保修。如果是由于我的组装问题导致的故障，我免费负责维修。</p>
-                <p data-lang="en">All hardware comes with manufacturer warranty. I provide support for any assembly-related issues.</p>
-                <p data-lang="es">Todo el hardware tiene garantía del fabricante.</p>
-            </div>
-        </details>
-    </section>
     <section id="pricing" style="background-color: #0f0f0f;">
         <h2 data-lang="en">Transparent Pricing</h2>
         <h2 data-lang="zh">透明报价</h2>
         <h2 data-lang="es">Precios Transparentes</h2>
         
         <p data-lang="zh" style="margin-bottom: 40px; color: #888;">
-            没有隐形消费。硬件按市场价实报实销（或者你自己买），我只收专业的手工费。<br>
+            没有隐形消费。硬件按市场价实报实销，我只收专业的手工费。<br>
             <span style="color: var(--secondary-color); font-weight: bold;">🎉 开业限时特惠：手工费 8 折 (20% OFF)！</span>
         </p>
         <p data-lang="en" style="margin-bottom: 40px; color: #888;">
@@ -337,7 +277,7 @@
                     <li data-lang="zh">✅ 我帮你选件、下单、验货</li>
                     <li data-lang="zh">✅ 包含 BIOS 超频/降压优化</li>
                     <li data-lang="zh">✅ 适合：水冷/海景房/特效工作站</li>
-                    <li data-lang="zh">✅ <b>哪怕你不懂电脑，也能拥有最好的</b></li>
+                    <li data-lang="zh">✅ <b>小白也能拥有最好的</b></li>
 
                     <li data-lang="en">⭐ <b>Consultation Included</b></li>
                     <li data-lang="en">✅ Parts selection & ordering</li>
@@ -413,7 +353,67 @@
         </div>
     </section>
 
-     <footer style="background-color: #050505; border-top: 1px solid #222; padding: 50px 20px;">
+    <section id="faq" style="background-color: #0a0a0a; border-top: 1px solid #222;">
+        <h2 data-lang="en">Still have questions?</h2>
+        <h2 data-lang="zh">还有疑问？</h2>
+        <h2 data-lang="es">¿Aún tienes preguntas?</h2>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+            <details>
+                <summary>
+                    <span data-lang="zh">我可以自己买配件找你装吗？</span>
+                    <span data-lang="en">Can I bring my own parts?</span>
+                    <span data-lang="es">¿Puedo traer mis propias piezas?</span>
+                </summary>
+                <div class="faq-content">
+                    <p data-lang="zh">完全可以！如果你已经买好了配件，我提供纯组装与理线服务（$80起）。</p>
+                    <p data-lang="en">Absolutely! If you have the parts, I offer assembly and cable management services starting at $80.</p>
+                    <p data-lang="es">¡Absolutamente! Si tienes las piezas, ofrezco servicios de montaje.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>
+                    <span data-lang="zh">一般需要多久能装好？</span>
+                    <span data-lang="en">How long does it take?</span>
+                    <span data-lang="es">¿Cuánto tiempo tarda?</span>
+                </summary>
+                <div class="faq-content">
+                    <p data-lang="zh">零件到齐后，通常在 24-48 小时内完成组装和测试。如果急需，请提前告知。</p>
+                    <p data-lang="en">Usually 24-48 hours after all parts are received.</p>
+                    <p data-lang="es">Generalmente 24-48 horas después de recibir las piezas.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>
+                    <span data-lang="zh">你有保修吗？</span>
+                    <span data-lang="en">Do you offer warranty?</span>
+                    <span data-lang="es">¿Ofrecen garantía?</span>
+                </summary>
+                <div class="faq-content">
+                    <p data-lang="zh">硬件享受厂商原厂保修（我会帮你把盒子和发票留好）。如果是我的安装问题（如接线松动），永久免费修复。</p>
+                    <p data-lang="en">Hardware comes with manufacturer warranty. I provide lifetime support for any assembly-related issues.</p>
+                    <p data-lang="es">Todo el hardware tiene garantía del fabricante.</p>
+                </div>
+            </details>
+            
+            <details>
+                <summary>
+                    <span data-lang="zh">你住在 Flushing 哪里？方便停车吗？</span>
+                    <span data-lang="en">Where in Flushing? Is parking easy?</span>
+                    <span data-lang="es">¿Dónde en Flushing?</span>
+                </summary>
+                <div class="faq-content">
+                    <p data-lang="zh">我在 Flushing 中心区域（具体地址预约后发送）。如果你开车来送/取机箱，楼下可以短暂停留，非常方便。</p>
+                    <p data-lang="en">Central Flushing. Easy curb-side drop-off and pickup available.</p>
+                    <p data-lang="es">Flushing central. Fácil entrega y recogida.</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <footer style="background-color: #050505; border-top: 1px solid #222; padding: 50px 20px;">
         
         <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; text-align: left;">
             
