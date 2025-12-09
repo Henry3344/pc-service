@@ -6,25 +6,58 @@
     
     <title>Henry Custom PC | Flushing Custom Computer Build & Repair | 亨利定制装机</title>
     
-    <meta name="description" content="Expert Custom PC building service in Flushing, NY. Specialized in Gaming & VFX workstations. Transparent pricing, bilingual support. 坐标法拉盛，专业电脑装机维修，价格透明，懂后期特效配置。">
+    <meta name="description" content="Expert Custom PC building & repair in Flushing, Queens. Specialized in Gaming rigs (RTX 4090) & VFX workstations. Transparent pricing, bilingual support. 法拉盛专业电脑装机维修，价格透明。">
     
     <meta name="keywords" content="Custom PC Flushing, PC Repair Queens, Gaming PC NYC, Computer Assembly, 法拉盛装机, 电脑维修, RTX 4090 Build, VFX Workstation, Henry Custom PC">
     
-    <meta name="author" content="Henry Custom PC">
-
     <meta property="og:title" content="Henry Custom PC - Flushing Local Builder">
-    <meta property="og:description" content="Don't settle for pre-builts. Get a PC tailored to your workflow. Starts at $80.">
+    <meta property="og:description" content="Professional PC Building in NYC. Starts at $80. 懂特效的装机专家。">
     <meta property="og:image" content="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80">
     <meta property="og:url" content="https://henry3344.github.io/pc-service/">
     <meta property="og:type" content="website">
 
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😎</text></svg>">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ComputerRepair",
+      "name": "Henry Custom PC",
+      "image": "https://images.unsplash.com/photo-1593640408182-31c70c8268f5",
+      "@id": "https://henry3344.github.io/pc-service/",
+      "url": "https://henry3344.github.io/pc-service/",
+      "telephone": "+1-929-266-4485",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Main St",
+        "addressLocality": "Flushing",
+        "addressRegion": "NY",
+        "postalCode": "11354",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.7633,
+        "longitude": -73.8306
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "10:00",
+        "closes": "22:00"
+      },
+      "description": "Expert custom PC building and repair service in Flushing, NY. Specializing in gaming rigs and VFX workstations."
+    }
+    </script>
+
     <style>
         /* ============================
-           核心样式表 (Dark Mode + 性能优化版)
+           核心样式表 (Dark Mode + 苹果风动画)
            ============================ */
         :root {
-            --primary-color: #00f2ff; /* 赛博朋克蓝 */
-            --secondary-color: #ff0055; /* 促销强调色 */
+            --primary-color: #00f2ff; /* 赛博蓝 */
+            --secondary-color: #ff0055; /* 强调色 */
             --bg-color: #0a0a0a; /* 深邃黑 */
             --card-bg: #161616; /* 卡片黑 */
             --text-color: #f0f0f0;
@@ -43,7 +76,7 @@
         a { text-decoration: none; color: inherit; transition: color 0.3s var(--apple-ease); }
         a:hover { color: var(--primary-color); }
         
-        /* 顶部导航 */
+        /* Header */
         header {
             background-color: rgba(10, 10, 10, 0.85);
             backdrop-filter: saturate(180%) blur(20px);
@@ -55,7 +88,7 @@
         }
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px; }
         
-        /* 语言切换 */
+        /* Language Switch */
         .lang-switch { display: flex; gap: 10px; align-items: center; font-size: 0.9rem; cursor: pointer; }
         .lang-btn {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #aaa;
@@ -66,47 +99,31 @@
         .lang-btn.active { border-color: var(--primary-color); color: var(--primary-color); background: rgba(0, 242, 255, 0.1); }
         [data-lang]:not(.active-lang) { display: none; }
 
-        /* ============================
-           动画系统
-           ============================ */
+        /* Animations */
         @keyframes fadeInUpHero {
             from { opacity: 0; transform: translateY(30px); filter: blur(5px); }
             to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
-
         .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(40px);
+            opacity: 0; transform: translateY(40px);
             transition: opacity 1s var(--apple-ease), transform 1s var(--apple-ease);
             will-change: opacity, transform;
         }
-        
-        .animate-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
         .delay-4 { transition-delay: 0.4s; }
 
-        /* ============================
-           页面区块
-           ============================ */
-
-        /* Hero Section */
+        /* Hero */
         .hero {
             height: 95vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(10,10,10,1) 100%), 
                         url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: scroll; /* 防止手机抖动 */
+            background-size: cover; background-position: center; background-attachment: scroll;
             padding-top: 60px;
         }
-        
         .hero h1 { 
             font-size: 3.5rem; margin-bottom: 20px; line-height: 1.1; 
             text-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
@@ -124,45 +141,27 @@
             transition: transform 0.3s var(--apple-ease), box-shadow 0.3s;
             animation: fadeInUpHero 1s var(--apple-ease) 0.4s both;
         }
-        .btn:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 20px 40px -10px rgba(0, 242, 255, 0.7); 
-            background-color: #fff;
-        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(0, 242, 255, 0.7); background-color: #fff; }
 
-        /* 通用区块 */
+        /* Sections */
         section { padding: 100px 8%; }
-        h2 { 
-            font-size: 2.5rem; margin-bottom: 60px; text-align: center; font-weight: 800;
-            letter-spacing: -1px;
-        }
-        h2::after {
-            content: ''; display: block; width: 60px; height: 4px; 
-            background: var(--primary-color); margin: 20px auto 0; border-radius: 2px;
-        }
+        h2 { font-size: 2.5rem; margin-bottom: 60px; text-align: center; font-weight: 800; letter-spacing: -1px; }
+        h2::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary-color); margin: 20px auto 0; border-radius: 2px; }
         
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        
         .feature-card { 
             background-color: var(--card-bg); padding: 40px 30px; border-radius: 20px; 
             border: 1px solid rgba(255,255,255,0.05);
             transition: transform 0.4s var(--apple-ease), border-color 0.4s;
         }
-        .feature-card:hover { 
-            transform: translateY(-8px);
-            border-color: rgba(0, 242, 255, 0.3);
-            background-color: #1a1a1a;
-        }
+        .feature-card:hover { transform: translateY(-8px); border-color: rgba(0, 242, 255, 0.3); background-color: #1a1a1a; }
         .feature-card h3 { color: var(--primary-color); margin-top: 0; font-size: 1.5rem; margin-bottom: 15px; }
         .feature-card p, .feature-card li { color: #bbb; }
 
         /* Process Steps */
         .process-steps { display: flex; flex-wrap: wrap; justify-content: space-between; text-align: center; gap: 30px; }
         .step { flex: 1; min-width: 220px; position: relative; }
-        .step-num { 
-            font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.03); 
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%); z-index: 0;
-        }
+        .step-num { font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.03); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); z-index: 0; }
         .step-title { font-weight: bold; font-size: 1.3rem; position: relative; z-index: 1; color: #fff; margin-bottom: 10px;}
 
         /* FAQ */
@@ -182,7 +181,6 @@
         /* Footer */
         footer { background-color: #050505; border-top: 1px solid rgba(255,255,255,0.1); padding: 80px 10% 40px; text-align: center; color: #666; font-size: 0.9rem; }
 
-        /* Mobile Fixes */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             section { padding: 60px 5%; }
@@ -205,18 +203,18 @@
 
     <section class="hero">
         <div data-lang="en">
-            <h1>Built by a Creator,<br>For Creators & Gamers.</h1>
-            <p>Don't settle for pre-builts. Get a PC tailored to your workflow. High Performance. Clean Aesthetics. Flushing Local.</p>
+            <h1>Expert PC Builder in Flushing.<br>For Creators & Gamers.</h1>
+            <p>Don't settle for pre-builts. Get a PC tailored to your workflow. High Performance. Clean Aesthetics. Serving Flushing & Queens.</p>
             <a href="#contact" class="btn">Start Your Build</a>
         </div>
         <div data-lang="zh">
-            <h1>懂特效的装机专家，<br>为你打造性能怪兽。</h1>
+            <h1>法拉盛专业装机服务，<br>为创作者与玩家而生。</h1>
             <p>拒绝品牌机的高价低配。无论你是剪辑 4K 视频还是畅玩黑神话，我都给你最完美的方案。坐标 Flushing。</p>
             <a href="#contact" class="btn">开始定制</a>
         </div>
         <div data-lang="es">
-            <h1>Construido por un Creador,<br>Para Creadores y Gamers.</h1>
-            <p>No te conformes. Obtén una PC adaptada a tu flujo de trabajo. Alto rendimiento. Estética limpia. Local en Flushing.</p>
+            <h1>Constructor de PC en Flushing.<br>Para Creadores y Gamers.</h1>
+            <p>No te conformes. Obtén una PC adaptada a tu flujo de trabajo. Alto rendimiento. Estética limpia. Sirviendo a Flushing y Queens.</p>
             <a href="#contact" class="btn">Comenzar</a>
         </div>
     </section>
@@ -245,11 +243,11 @@
             </div>
             <div class="feature-card animate-on-scroll delay-3">
                 <h3 data-lang="en">🤝 Honest Local Service</h3>
-                <p data-lang="en">Located in Flushing. Transparent pricing, no hidden fees. I'm just a text away if you need help.</p>
-                <h3 data-lang="zh">🤝 诚实透明</h3>
-                <p data-lang="zh">就在 Flushing。拒绝隐形消费。配置单透明，任何问题发个短信我就在。</p>
+                <p data-lang="en">Located in Flushing, Queens. Transparent pricing, no hidden fees. Serving NYC with passion.</p>
+                <h3 data-lang="zh">🤝 诚实本地服务</h3>
+                <p data-lang="zh">坐标 Flushing，服务全纽约。拒绝隐形消费。配置单透明，任何问题发个短信我就在。</p>
                 <h3 data-lang="es">🤝 Servicio Local Honesto</h3>
-                <p data-lang="es">Ubicado en Flushing. Precios transparentes. Estoy a un mensaje de distancia si necesitas ayuda.</p>
+                <p data-lang="es">Ubicado en Flushing, Queens. Precios transparentes. Sirviendo a NYC con pasión.</p>
             </div>
         </div>
     </section>
@@ -275,7 +273,7 @@
                 <div class="step-title" data-lang="zh">确定配置</div>
                 <div class="step-title" data-lang="es">Selección</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">我为你出具最优配置单，确认无误。</p>
-                <p data-lang="en" style="font-size:0.9rem; color:#888;">I create the perfect parts list for you.</p>
+                <p data-lang="en" style="font-size:0.9rem; color:#888;">I create the perfect parts list.</p>
                 <p data-lang="es" style="font-size:0.9rem; color:#888;">Selección de piezas.</p>
             </div>
             <div class="step animate-on-scroll delay-3">
@@ -284,7 +282,7 @@
                 <div class="step-title" data-lang="zh">组装与测试</div>
                 <div class="step-title" data-lang="es">Armado</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">精心组装，并进行压力测试确保稳定。</p>
-                <p data-lang="en" style="font-size:0.9rem; color:#888;">Professional assembly and stress testing.</p>
+                <p data-lang="en" style="font-size:0.9rem; color:#888;">Professional assembly and testing.</p>
                 <p data-lang="es" style="font-size:0.9rem; color:#888;">Montaje profesional.</p>
             </div>
             <div class="step animate-on-scroll delay-4">
@@ -293,7 +291,7 @@
                 <div class="step-title" data-lang="zh">交付</div>
                 <div class="step-title" data-lang="es">Entrega</div>
                 <p data-lang="zh" style="font-size:0.9rem; color:#888;">Flushing 可送货或自取。</p>
-                <p data-lang="en" style="font-size:0.9rem; color:#888;">Local pickup or delivery in Flushing.</p>
+                <p data-lang="en" style="font-size:0.9rem; color:#888;">Local pickup or delivery.</p>
                 <p data-lang="es" style="font-size:0.9rem; color:#888;">Recogida local.</p>
             </div>
         </div>
@@ -492,7 +490,7 @@
             <div style="flex: 1; min-width: 250px;">
                 <h3 style="color: var(--primary-color); margin-top: 0; text-transform: uppercase; letter-spacing: 2px; font-size: 1.2rem;">Henry Custom PC</h3>
                 <p style="color: #888; font-size: 0.9rem; line-height: 1.8; margin-top: 20px;">
-                    Build with passion in Flushing, NY.<br>
+                    Build with passion in Flushing, Queens, NYC.<br>
                     为创作者与玩家打造的极致主机。<br>
                     <span style="color: #555; font-weight: 600;">Focus on Performance & Esthetics.</span>
                 </p>
@@ -527,7 +525,7 @@
             </div>
         </div>
         <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: #444; font-size: 0.8rem;">
-            &copy; 2025 Henry Custom PC. All Rights Reserved.
+            &copy; 2025 Henry Custom PC. Built in Flushing, NY.
         </div>
     </footer>
 
@@ -631,7 +629,6 @@
     </div>
 
     <script>
-        // 1. Language Switcher
         function switchLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('[data-lang]').forEach(el => el.classList.remove('active-lang'));
@@ -639,7 +636,6 @@
             document.querySelectorAll(`.lang-btn[onclick="switchLang('${lang}')"]`).forEach(btn => btn.classList.add('active'));
         }
 
-        // 2. Init & Scroll Animation
         window.onload = function() {
             // Auto Language
             const userLang = navigator.language || navigator.userLanguage; 
@@ -648,7 +644,7 @@
             else if (userLang.startsWith('es')) { targetLang = 'es'; }
             switchLang(targetLang);
 
-            // Scroll Observer
+            // Scroll Animation
             const observerOptions = {
                 root: null, threshold: 0.15, rootMargin: "0px 0px -50px 0px"
             };
@@ -666,7 +662,7 @@
                 observer.observe(el);
             });
 
-            // 3. Bot Timer (3 Minutes = 180000ms)
+            // Bot Timer
             setTimeout(() => {
                 const tooltip = document.getElementById('bot-tooltip');
                 if (document.getElementById('bot-window').style.opacity === '0') {
@@ -676,7 +672,7 @@
             }, 180000); 
         };
 
-        // 4. Bot Toggle Logic
+        // Bot Logic
         function toggleChat() {
             const win = document.getElementById('bot-window');
             const tooltip = document.getElementById('bot-tooltip');
@@ -696,7 +692,6 @@
             }
         }
 
-        // 5. Bot Form Submit
         const form = document.getElementById("bot-form");
         form.addEventListener("submit", async (event) => {
             event.preventDefault();
@@ -726,7 +721,6 @@
                         btn.disabled = false;
                         btn.style.opacity = "1";
                         btn.innerHTML = '<span data-lang="en" class="active-lang">Send Message</span><span data-lang="zh">发送信息</span><span data-lang="es">Enviar Mensaje</span>';
-                        // Refresh lang
                         const currentLang = isZh ? 'zh' : (isEs ? 'es' : 'en');
                         switchLang(currentLang); 
                     }, 2000);
