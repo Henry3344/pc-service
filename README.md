@@ -33,8 +33,6 @@ The website is designed to be **lightweight, fast, and visually engaging**, targ
 * **Forms:** Google Forms (Embedded) & Formspree (API).
 * **Hosting:** GitHub Pages.
 
-## 📸 Screenshots / 截图预览
-*(You can upload a screenshot of your website here later / 这里以后可以放一张网页截图)*
 ## 🚀 How to Run Locally / 本地运行
 1.  Clone the repo:
     ```bash
