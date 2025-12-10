@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://henry3344.github.io/pc-service/sitemap.xml
